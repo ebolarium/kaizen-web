@@ -197,7 +197,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                   {activity.images && activity.images.length > 0 && (
                     <div className="mt-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {activity.images.map((image, imgIndex) => (
+                        {activity.images.map((image: string, imgIndex: number) => (
                           <div key={imgIndex} className="relative group cursor-pointer" onClick={() => openModal(image)}>
                             <img
                               src={image}
