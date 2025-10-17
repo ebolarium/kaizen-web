@@ -1,0 +1,72 @@
+{
+  "local": [
+    {
+      "id": "local-2",
+      "title": "Concert Event with Adana Çokfonik Music Association - May 2024",
+      "description": "A concert in cooperation with Adana Çokfonik Music Association",
+      "image": "/images/uploads/1760600288060-kaizen_cokfonik_2.jpg",
+      "content": "On May 18, 2024, as Kazien Association, we held a concert in cooperation with Adana Çokfonik Music Association, which has been operating in Adana for 10 years, with the participation of Polyphonic and Çukurova Philharmonic Association Polyphonic Children's Choirs. The event was held as a step towards promoting and sustaining choral and polyphonic music culture. This collaboration was an important step towards reinforcing our contribution to the rooting of this culture in Adana and its transfer to future generations.",
+      "date": "2024-02-01",
+      "status": "completed",
+      "gallery": [
+        "/images/uploads/1760618259288-kaizen_cokfonik_1.jpg",
+        "/images/uploads/1760618259325-kaizen_cokfonik_2.jpg",
+        "/images/uploads/1760618259326-kaizen_cokfonik_3.jpg"
+      ]
+    },
+    {
+      "id": "local-1760617708685",
+      "title": "Training Activity for Youth Project - July 2024",
+      "description": "As Kaizen Association, we met with young people in the Adana/Turkiye",
+      "content": "As Kaizen Association, we met with young people in the Adana/Turkiye mobility of the \"Extremism and Radicalization\" Erasmus+ Youth project, which is carried out by Çukurova Gelecek Nesil Gençlik Derneği and brings together young people from Europe. First we made an energizer activity with the young people and then held a session about the EU Youth Strategy and the activities carried out in our country. We would like to thank @cgderorg Association and participants for this fun and productive day. ",
+      "image": "/images/uploads/1760617708530-1280.jpg",
+      "gallery": [
+        "/images/uploads/1760618214743-kaizen_youth_2.jpg"
+      ],
+      "date": "2025-10-16",
+      "status": "completed"
+    }
+  ],
+  "erasmus": {
+    "k1": {
+      "k152": [],
+      "k153": []
+    },
+    "k2": {
+      "k210": [
+        {
+          "id": "k210-1760619346070",
+          "title": "Let's Raise Climate Change Awareness For the Rise of Resilience!",
+          "description": "Project Objective: The aim of the project is to increase awareness among young people about climate change and develop resilience in the face of earthquake and fire situations.",
+          "content": "KA210 YOU Erasmus+ Project\n\n**Project Number:** 2023-1-RO01-KA210-YOU-000153810\n\n**Grant Program:** Erasmus+ KA210 Small Scale Cooperation Partnership\n\n**Coordinator:** Romania\n\n**Partners:** Portugal\n\n**Project Duration:** 01.09.2023 - 31.03.2025\n\n**Project Objective:** The aim of the project is to increase awareness among young people about climate change and develop resilience in the face of earthquake and fire situations.\n\n**Activities:**\nTransnational Project Meeting: Adana, Turkey, 9-11 February 2024\nShort-Term Joint Staff Training Activity: Foscani, Romania, 6-13 April 2024\nLocal Training Activity\nThe International Youth Volunteer Corps For Climate Change (CIVYCS): Volunteer Youth Teams Against Climate Change\nShort-Term Blended Youth Mobility: Lisbon, Portugal, 19-24 August 2024\nLocal Conference Event\nDissemination Activities\n\n**Project Outputs:**\nE-Learning Platform (Open Educational Resource): A digital education module designed to increase awareness among young people about climate change and build resilience.\nDigital Games (Open Educational Resource): Digital games aiming to serve as informal learning, allowing young people to enhance their awareness of climate change and resilience.\n\n**TURKIYE MOBILITY (9th-11th February 2024)**\nThe transnational project meeting of the European Union Erasmus+ Program KA210 Youth Project \"Let's Raise Climate Change Awareness for the Rise of Resilience!\", which was eligible to receive a grant in 2023, was carried out with 3 days of work and activities. The partners, who made presentations about disaster situations in their countries and the work done, discussed what young people can do in these situations and exchanged ideas about the online training module and its content, which will form the intellectual output of the project.",
+          "image": "/images/uploads/1760622391941-Activity2.jpg",
+          "gallery": [
+            "/images/uploads/1760619345159-resist_1.jpg",
+            "/images/uploads/1760619345203-resist_2.jpg",
+            "/images/uploads/1760619345203-resist_3.jpg",
+            "/images/uploads/1760619345203-resist_4.jpg"
+          ],
+          "date": "2025-10-16",
+          "status": "completed",
+          "activities": [
+            {
+              "id": "1760620781119",
+              "content": "ANNOUNCEMENT for YOUTHWORKERS",
+              "images": [
+                "/images/uploads/1760620781104-Activity1.jpg"
+              ]
+            },
+            {
+              "id": "1760622391947",
+              "content": "**LOCAL CONFERENCE for YOUTH**\n\nAs Kaizen Association, we held a local conference for our Erasmus KA210 project \"Let's Raise Climate Change Awareness for the Rise of Resilience!\" At the conference, which was held with the participation of young people from universities and high schools, we informed them about the process by giving information about the aims, partners and activities of our project.",
+              "images": [
+                "/images/uploads/1760622391941-Activity2.jpg"
+              ]
+            }
+          ]
+        }
+      ],
+      "k220": []
+    }
+  }
+}
