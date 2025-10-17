@@ -6,11 +6,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:static": "next build && next export",
     "start": "next start",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "export": "next export"
+    "lint:fix": "eslint . --fix"
   },
   "engines": {
     "node": ">=18.0.0",

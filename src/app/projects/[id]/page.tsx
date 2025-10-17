@@ -91,13 +91,13 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
       case 'local':
         return { name: 'Local Events', color: 'blue', path: '/projects/local' };
       case 'k152':
-        return { name: 'Erasmus K1 K152', color: 'green', path: '/projects' };
+        return { name: 'Erasmus K1 K152', color: 'green', path: '/projects/erasmus/k1/k152' };
       case 'k153':
-        return { name: 'Erasmus K1 K153', color: 'green', path: '/projects' };
+        return { name: 'Erasmus K1 K153', color: 'green', path: '/projects/erasmus/k1/k153' };
       case 'k210':
-        return { name: 'Erasmus K2 K210', color: 'purple', path: '/projects' };
+        return { name: 'Erasmus K2 K210', color: 'purple', path: '/projects/erasmus/k2/k210' };
       case 'k220':
-        return { name: 'Erasmus K2 K220', color: 'purple', path: '/projects' };
+        return { name: 'Erasmus K2 K220', color: 'purple', path: '/projects/erasmus/k2/k220' };
       default:
         return { name: 'Project', color: 'gray', path: '/projects' };
     }

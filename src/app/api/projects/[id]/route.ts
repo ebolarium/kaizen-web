@@ -76,12 +76,11 @@ function findProjectById(data: any, id: string) {
 // GET - Get specific project (public access)
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
     const data = readProjects();
-    const result = findProjectById(data, id);
+    const result = findProjectById(data, params.id);
     
     if (!result) {
       return NextResponse.json(
@@ -112,7 +111,7 @@ export async function GET(
 // PUT - Update project (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Verify admin authentication
@@ -121,12 +120,11 @@ export async function PUT(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
     const projectData = await request.json();
     const data = readProjects();
     
     // Find the project
-    const result = findProjectById(data, id);
+    const result = findProjectById(data, params.id);
     
     if (!result) {
       return NextResponse.json(
@@ -181,7 +179,7 @@ export async function PUT(
 // DELETE - Delete project (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Verify admin authentication
@@ -190,11 +188,10 @@ export async function DELETE(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
     const data = readProjects();
     
     // Find the project
-    const result = findProjectById(data, id);
+    const result = findProjectById(data, params.id);
     
     if (!result) {
       return NextResponse.json(

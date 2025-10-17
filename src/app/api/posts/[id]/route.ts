@@ -36,12 +36,11 @@ function writeBlogPosts(data: any) {
 // GET - Get specific blog post
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
     const data = readBlogPosts();
-    const post = data.posts.find((p: any) => p.id === id);
+    const post = data.posts.find((p: any) => p.id === params.id);
     
     if (!post) {
       return NextResponse.json(
@@ -63,7 +62,7 @@ export async function GET(
 // PUT - Update blog post
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     // Verify admin authentication
@@ -72,12 +71,11 @@ export async function PUT(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = await params;
     const postData = await request.json();
     const data = readBlogPosts();
     
     // Find the post index
-    const postIndex = data.posts.findIndex((p: any) => p.id === id);
+    const postIndex = data.posts.findIndex((p: any) => p.id === params.id);
     
     if (postIndex === -1) {
       return NextResponse.json(
