@@ -186,7 +186,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
         <section className="py-12 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="space-y-8">
-              {project.activities.map((activity: any, index) => (
+              {project.activities.map((activity: any, index: number) => (
                 <div key={activity.id || index} className="bg-white rounded-lg shadow-sm p-6">
                   <div className="prose prose-lg max-w-none text-gray-800">
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
