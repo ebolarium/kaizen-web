@@ -24,6 +24,7 @@ interface Project {
 export default function AdminProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     // Check if user is logged in

@@ -6,9 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true
   },
-  experimental: {
-    serverComponentsExternalPackages: ['bcryptjs']
-  },
+  serverExternalPackages: ['bcryptjs'],
   eslint: {
     ignoreDuringBuilds: true,
   },
