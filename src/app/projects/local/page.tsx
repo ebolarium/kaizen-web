@@ -35,7 +35,7 @@ export default function LocalProjects() {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6">Making a Local Impact</h2>
               <div className="space-y-4 text-gray-600 text-lg">
                 <p>
-                  Our local projects are the foundation of Kaizen's mission. These community-focused initiatives 
+                  Our local projects are the foundation of Kaizen&apos;s mission. These community-focused initiatives 
                   are designed to address specific needs in our immediate area while building capacity for 
                   sustainable development.
                 </p>
@@ -175,8 +175,8 @@ export default function LocalProjects() {
             Ready to Make a Local Impact?
           </h2>
           <p className="text-xl mb-8 text-blue-100 max-w-3xl mx-auto">
-            Join us in creating positive change in our community. Whether you're interested in volunteering, 
-            partnering, or supporting our work, we'd love to hear from you.
+            Join us in creating positive change in our community. Whether you&apos;re interested in volunteering, 
+            partnering, or supporting our work, we&apos;d love to hear from you.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

@@ -74,7 +74,7 @@ export default function Events() {
               </div>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">No Events Yet</h3>
               <p className="text-gray-600 mb-6">
-                We're working on organizing exciting local events. Check back soon!
+                We&apos;re working on organizing exciting local events. Check back soon!
               </p>
             </div>
           )}

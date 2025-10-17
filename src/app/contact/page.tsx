@@ -34,7 +34,7 @@ export default function Contact() {
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Contact Us</h1>
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
-              We'd love to hear from you. Get in touch with us to learn more about our programs, partnerships, or how you can get involved.
+              We&apos;d love to hear from you. Get in touch with us to learn more about our programs, partnerships, or how you can get involved.
             </p>
           </div>
         </div>

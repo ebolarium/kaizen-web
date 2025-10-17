@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 export default function Team() {
   const teamMembers = [
     {
@@ -29,7 +27,7 @@ export default function Team() {
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h1>
             <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
-              Meet the passionate individuals who make Kaizen's mission possible through their expertise, dedication, and commitment to continuous improvement.
+              Meet the passionate individuals who make Kaizen&apos;s mission possible through their expertise, dedication, and commitment to continuous improvement.
             </p>
           </div>
         </div>
