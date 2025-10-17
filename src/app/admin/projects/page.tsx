@@ -7,9 +7,18 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  content?: string;
+  image?: string;
+  gallery?: string[];
   category: string;
   status: string;
   date: string;
+  activities?: Array<{
+    id: string;
+    content: string;
+    images: string[];
+  }>;
+  partners?: string[];
 }
 
 export default function AdminProjects() {
