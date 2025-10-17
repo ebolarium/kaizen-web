@@ -28,7 +28,7 @@ function readBlogPosts() {
 }
 
 // Helper function to write blog posts
-function writeBlogPosts(data: any) {
+function writeBlogPosts(data: { posts: any[] }) {
   const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }

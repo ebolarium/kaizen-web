@@ -28,7 +28,7 @@ function readBlogPosts() {
 }
 
 // Helper function to write blog posts
-function writeBlogPosts(data: any) {
+function writeBlogPosts(data: { posts: any[] }) {
   const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
@@ -40,7 +40,7 @@ export async function GET(
 ) {
   try {
     const data = readBlogPosts();
-    const post = data.posts.find((p: any) => p.id === params.id);
+    const post = data.posts.find((p: { id: string }) => p.id === params.id);
     
     if (!post) {
       return NextResponse.json(
@@ -75,7 +75,7 @@ export async function PUT(
     const data = readBlogPosts();
     
     // Find the post index
-    const postIndex = data.posts.findIndex((p: any) => p.id === params.id);
+    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === params.id);
     
     if (postIndex === -1) {
       return NextResponse.json(
@@ -129,7 +129,7 @@ export async function DELETE(
     const data = readBlogPosts();
     
     // Find the post index
-    const postIndex = data.posts.findIndex((p: any) => p.id === params.id);
+    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === params.id);
     
     if (postIndex === -1) {
       return NextResponse.json(
