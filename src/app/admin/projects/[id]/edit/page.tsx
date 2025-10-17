@@ -13,7 +13,6 @@ interface Project {
   description: string;
   content: string;
   image: string;
-  gallery?: string[];
   category: string;
   status: string;
   date: string;
@@ -22,7 +21,6 @@ interface Project {
     content: string;
     images: string[];
   }>;
-  partners?: string[];
 }
 
 export default function EditProject({ params }: { params: Promise<{ id: string }> }) {

@@ -28,13 +28,13 @@ function readProjects() {
 }
 
 // Helper function to write projects
-function writeProjects(data: { local: any[]; erasmus: any }) {
+function writeProjects(data: any) {
   const filePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
 
 // Helper function to find project by ID
-function findProjectById(data: { local: any[]; erasmus: any }, id: string) {
+function findProjectById(data: any, id: string) {
   // Search in local projects
   for (let i = 0; i < data.local.length; i++) {
     if (data.local[i].id === id) {

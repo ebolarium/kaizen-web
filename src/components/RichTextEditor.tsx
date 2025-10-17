@@ -38,7 +38,7 @@ export default function RichTextEditor({
         data-color-mode="light"
         preview="edit"
         hideToolbar={false}
-        visibleDragbar={false}
+        visibleDragBar={false}
         textareaProps={{
           placeholder: placeholder,
           style: {

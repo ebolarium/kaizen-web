@@ -28,7 +28,7 @@ function readProjects() {
 }
 
 // Helper function to write projects
-function writeProjects(data: { local: any[]; erasmus: any }) {
+function writeProjects(data: any) {
   const filePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 }
