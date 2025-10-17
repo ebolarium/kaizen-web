@@ -13,6 +13,7 @@ interface Project {
   description: string;
   content: string;
   image: string;
+  gallery: string[];
   category: string;
   status: string;
   date: string;
