@@ -36,11 +36,12 @@ function writeBlogPosts(data: { posts: any[] }) {
 // GET - Get specific blog post
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = readBlogPosts();
-    const post = data.posts.find((p: { id: string }) => p.id === params.id);
+    const post = data.posts.find((p: { id: string }) => p.id === id);
     
     if (!post) {
       return NextResponse.json(
@@ -62,7 +63,7 @@ export async function GET(
 // PUT - Update blog post
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin authentication
@@ -71,11 +72,12 @@ export async function PUT(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     const postData = await request.json();
     const data = readBlogPosts();
     
     // Find the post index
-    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === params.id);
+    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === id);
     
     if (postIndex === -1) {
       return NextResponse.json(
@@ -117,7 +119,7 @@ export async function PUT(
 // DELETE - Delete blog post
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin authentication
@@ -126,10 +128,11 @@ export async function DELETE(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     const data = readBlogPosts();
     
     // Find the post index
-    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === params.id);
+    const postIndex = data.posts.findIndex((p: { id: string }) => p.id === id);
     
     if (postIndex === -1) {
       return NextResponse.json(
