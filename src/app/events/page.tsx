@@ -8,24 +8,19 @@ export default function Events() {
   const localEvents = projects.local;
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-green-50">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-green-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">
-              Local Events
+    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
+      {/* Events Grid */}
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Events and Trainings
             </h1>
-            <p className="text-lg md:text-xl mb-6 text-blue-100 max-w-3xl mx-auto">
-              Discover our local community events and initiatives that bring people together for education, culture, and social development.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover our local community events and training programs that bring people together for education, culture, and social development.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Events Grid */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           {localEvents.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {localEvents.map((event) => (

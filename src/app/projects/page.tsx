@@ -1,19 +1,21 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import projectsData from '@/data/projects.json';
 
 const projects = projectsData;
 
 export default function Projects() {
-  const erasmusK2Projects = [...projects.erasmus.k2.k210, ...projects.erasmus.k2.k220];
+  const erasmusK2Projects = [...projects.erasmus.k2.k210, ...projects.erasmus.k2.k220]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="bg-white">
+    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-12">
+      <section className="text-gray-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Our Projects</h1>
-            <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               KAIZEN focuses both domestic and international subjects on education, research, development, youth work, environment, nature, tourism, digitalization, culture, art, social entrepreneurship, innovation, active citizenship, inclusion, lifelong learning, disadvantaged groups of society, green practises, sustainability.
             </p>
           </div>
@@ -21,29 +23,35 @@ export default function Projects() {
       </section>
 
       {/* Project Categories */}
-      <section className="py-20">
+      <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-4xl mx-auto">
             {/* Erasmus Projects */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-8">
-              <div className="text-center mb-8">
-                <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9" />
-                  </svg>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Erasmus+ Projects</h3>
-                <p className="text-gray-600">
-                  International partnerships that bring together institutions across Europe to collaborate on innovative educational initiatives.
-                </p>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 relative">
+              <div className="absolute top-4 left-8">
+                <Image
+                  src="/images/Erasmus_Logo.png"
+                  alt="Erasmus+ Logo"
+                  width={120}
+                  height={60}
+                  className="object-contain"
+                />
               </div>
               
-              <div className="mb-8">
+              <div className="mb-8 mt-16">
                 {/* Projects Table */}
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        </tr>
+                      </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {erasmusK2Projects.map((project) => (
                           <tr key={project.id} className="hover:bg-gray-50 transition-colors duration-200">
@@ -58,9 +66,13 @@ export default function Projects() {
                                     />
                                   ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                                      <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                      </svg>
+                                      <Image
+                                        src="/images/logo.png"
+                                        alt="Project Placeholder"
+                                        width={40}
+                                        height={40}
+                                        className="object-contain opacity-50"
+                                      />
                                     </div>
                                   )}
                                 </div>

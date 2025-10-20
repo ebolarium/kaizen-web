@@ -46,7 +46,6 @@ export default function RichTextEditor({
             fontFamily: '-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif',
           },
         }}
-        toolbarHeight={50}
       />
     </div>
   );

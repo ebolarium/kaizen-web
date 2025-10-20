@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       title: projectData.title,
       description: projectData.description || '',
       content: projectData.content || '',
-      image: projectData.image || '/images/projects/default.jpg',
+      image: projectData.image || '/images/Erasmus_Logo.png',
       gallery: projectData.gallery || [],
       activities: projectData.activities || [],
       date: new Date().toISOString().split('T')[0],

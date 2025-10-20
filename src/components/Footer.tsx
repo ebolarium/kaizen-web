@@ -7,25 +7,15 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo and Description */}
-          <div className="lg:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <Image 
-                src="/images/logo.png" 
-                alt="Kaizen Logo" 
-                width={40} 
-                height={40} 
-                className="w-10 h-10 object-contain invert"
-              />
-              <div>
-                <div className="text-xl font-bold">KAIZEN</div>
-                <div className="text-sm text-gray-400">Intercultural Communication and Educational Research Association</div>
-              </div>
+        <div className="flex justify-center">
+          {/* Contact Info */}
+          <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-2">
+              <span className="text-gray-400"></span>
+              <a href="mailto:ngokaizen@gmail.com" className="text-gray-300 hover:text-white transition-colors duration-200">
+                ngokaizen@gmail.com
+              </a>
             </div>
-            <p className="text-gray-300 mb-6 max-w-md">
-              KAIZEN is a non-governmental organization founded in 2023 by experts with over 10 years of experience in international education and cultural projects. We promote lifelong learning across all age groups through diverse activities and initiatives.
-            </p>
             <div className="flex space-x-4">
               <a 
                 href="https://www.facebook.com/kaizen.association" 
@@ -55,66 +45,6 @@ const Footer = () => {
                 </svg>
               </a>
             </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/team" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Our Team
-                </Link>
-              </li>
-              <li>
-                <Link href="/projects" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Projects
-                </Link>
-              </li>
-              <li>
-                <Link href="/events" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Events
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors duration-200">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Info</h3>
-            <ul className="space-y-2 text-gray-300">
-              <li>
-                <span className="text-gray-400">Email:</span>
-                <br />
-                <a href="mailto:ngokaizen@gmail.com" className="hover:text-white transition-colors duration-200">
-                  ngokaizen@gmail.com
-                </a>
-              </li>
-              <li>
-                <span className="text-gray-400">Address:</span>
-                <br />
-                <span className="text-sm">
-                  Mahfesığmaz Mah. 79158 Sok. No:3/A<br />
-                  Moralı Apartmanı B Blok<br />
-                  Çukurova Adana / Türkiye
-                </span>
-              </li>
-            </ul>
           </div>
         </div>
 

@@ -4,15 +4,15 @@ export default function Team() {
   const teamMembers = [
     {
       name: "Şerife Yüksel",
-      role: "English Teacher",
-      bio: "Experienced in Erasmus+KA2 projects. Project consultant and manager.",
+      role: "Project Consultant and Manager",
+      bio: "Şerife Yüksel is an English teacher and international project coordinator with extensive experience in Erasmus+ initiatives. She has successfully managed and coordinated multicultural projects focusing on youth empowerment, inclusive education, environment and digital transformation. Through her leadership, she promotes intercultural dialogue and non-formal education, inspiring young people to become active, responsible, and creative citizens in a rapidly changing world.",
       image: "/images/team/Şerife Yüksel.png",
       expertise: ["Erasmus+ KA2", "Project Management", "English Teaching"]
     },
     {
       name: "Özlem Boğa",
-      role: "English Teacher",
-      bio: "Experienced in Erasmus+KA2 projects. Master's Degree in Educational Technologies. Project manager.",
+      role: "Project Manager and MA in Educational Technologies",
+      bio: "Özlem Boğa is an English teacher and project manager dedicated to developing innovative educational practices through international collaboration. She has led and coordinated multiple Erasmus+ projects on sustainability, digital literacy, and AI-supported learning. Combining her background in education with strong project management skills, she works to integrate technology and creativity into learning environments, fostering global awareness and lifelong learning.",
       image: "/images/team/Özlem Boğa.png",
       expertise: ["Erasmus+ KA2", "Educational Technologies", "Project Management"]
     }
@@ -20,19 +20,7 @@ export default function Team() {
 
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h1>
-            <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
-              Meet the passionate individuals who make Kaizen&apos;s mission possible through their expertise, dedication, and commitment to continuous improvement.
-            </p>
-          </div>
-        </div>
-      </section>
-
+    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
       {/* Core Team */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,16 +59,9 @@ export default function Team() {
                   </div>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm mb-4">{member.bio}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {member.expertise.map((skill, skillIndex) => (
-                      <span key={skillIndex} className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-1 text-center">{member.name}</h3>
+                  <p className="text-yellow-600 font-medium mb-3 text-center">{member.role}</p>
+                  <p className="text-gray-600 text-sm mb-4 text-justify">{member.bio}</p>
                 </div>
               </div>
             ))}

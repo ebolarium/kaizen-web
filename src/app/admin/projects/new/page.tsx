@@ -199,7 +199,7 @@ export default function NewProject() {
         }
       } else if (!formData.image) {
         // If no file and no URL, use a default image
-        imageUrl = '/images/projects/default.jpg';
+        imageUrl = '/images/Erasmus_Logo.png';
       }
 
       // Upload gallery images

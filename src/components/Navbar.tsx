@@ -9,9 +9,9 @@ const Navbar = () => {
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
+    { name: 'About', href: '/#about' },
     { name: 'Team', href: '/team' },
-    { name: 'Projects', href: '/projects' },
+    { name: 'Erasmus+', href: '/projects' },
     { name: 'Events', href: '/events' },
     { name: 'Contact', href: '/contact' },
   ];
@@ -30,7 +30,7 @@ const Navbar = () => {
                 height={50}
                 className="w-12 h-12 object-contain"
               />
-              <span className="text-sm font-bold text-gray-800 leading-tight">INTERCULTURAL COMMUNICATION AND EDUCATIONAL RESEARCH ASSOCIATION</span>
+              <span className="text-sm font-bold text-gray-800 leading-tight"></span>
             </Link>
           </div>
 

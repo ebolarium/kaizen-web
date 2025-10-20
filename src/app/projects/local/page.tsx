@@ -7,26 +7,7 @@ export default function LocalProjects() {
   const localProjects = projects.local;
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Link href="/projects" className="text-blue-200 hover:text-white transition-colors duration-200">
-                Projects
-              </Link>
-              <span className="mx-2">/</span>
-              <span className="font-semibold">Local Projects</span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">Local Projects</h1>
-            <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto">
-              Community-focused initiatives that address local needs and create sustainable change in our immediate area.
-            </p>
-          </div>
-        </div>
-      </section>
-
+    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
       {/* Overview Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

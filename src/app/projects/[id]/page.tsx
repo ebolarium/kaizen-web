@@ -113,61 +113,73 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="bg-white">
-      {/* Hero Section */}
-      <section className={`bg-gradient-to-r ${colorClasses[categoryInfo.color as keyof typeof colorClasses]} text-white py-12`}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-4">
-              <Link href="/projects" className="text-white/80 hover:text-white transition-colors duration-200">
-                Projects
-              </Link>
-              <span className="mx-2">/</span>
-              <Link href={categoryInfo.path} className="text-white/80 hover:text-white transition-colors duration-200">
-                {categoryInfo.name}
-              </Link>
-              <span className="mx-2">/</span>
-              <span className="font-semibold">{project.title}</span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.title}</h1>
-            <div className="flex items-center justify-center space-x-6 text-white/80">
-              <span>{new Date(project.date).toLocaleDateString()}</span>
-              <span>•</span>
-              <span className="capitalize">{project.status}</span>
+
+      {/* Featured Image and Description */}
+      {project.image && (
+        <section className="py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-center">
+              {/* Featured Image - Left 30% */}
+              <div className="lg:col-span-3 aspect-square bg-gray-200 rounded-xl overflow-hidden shadow-lg">
+                <Image 
+                  src={project.image} 
+                  alt={project.title}
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              
+              {/* Short Description - Right 70% */}
+              <div className="lg:col-span-7 space-y-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">{project.title}</h2>
+                <div className="text-lg text-gray-600 leading-relaxed">
+                  {project.description}
+                </div>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-500">Type:</span>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      project.category === 'k210' 
+                        ? 'bg-purple-100 text-purple-800' 
+                        : project.category === 'k220'
+                        ? 'bg-purple-100 text-purple-800'
+                        : project.category === 'k152'
+                        ? 'bg-green-100 text-green-800'
+                        : project.category === 'k153'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {categoryInfo.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-500">Status:</span>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      project.status === 'completed' 
+                        ? 'bg-green-100 text-green-800' 
+                        : project.status === 'active'
+                        ? 'bg-blue-100 text-blue-800'
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-500">Date:</span>
+                    <span className="text-sm text-gray-600">{new Date(project.date).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Featured Image and Gallery */}
-      <section className="py-8">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {project.gallery && project.gallery.length > 0 ? (
-            <ImageSlider 
-              images={[project.image, ...project.gallery]} 
-              title={project.title} 
-            />
-          ) : project.image ? (
-            <div className="aspect-video bg-gray-200 rounded-xl overflow-hidden">
-              <Image 
-                src={project.image} 
-                alt={project.title}
-                width={800}
-                height={450}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ) : null}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Project Content */}
       <section className="py-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="prose prose-lg max-w-none">
-            <div className="text-xl text-gray-600 mb-8 leading-relaxed">
-              {project.description}
-            </div>
-            
             <div className="text-gray-800 leading-relaxed">
               <div className="prose prose-lg max-w-none">
                 <ReactMarkdown 
@@ -180,6 +192,18 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
           </div>
         </div>
       </section>
+
+      {/* Image Gallery */}
+      {project.gallery && project.gallery.length > 0 && (
+        <section className="py-12 bg-gray-50">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ImageSlider 
+              images={project.gallery} 
+              title={`${project.title} Gallery`} 
+            />
+          </div>
+        </section>
+      )}
 
       {/* Activities Section */}
       {project.activities && project.activities.length > 0 && (

@@ -240,6 +240,12 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
 
       setActivities([...activities, activity]);
       setNewActivity({ content: '', images: [] });
+      
+      // CRITICAL: Preserve the original featured image - never change it when adding activities
+      const originalImage = imagePreview || formData.image;
+      if (originalImage) {
+        setFormData(prev => ({ ...prev, image: originalImage }));
+      }
     } catch (error) {
       console.error('Error adding activity:', error);
     } finally {
@@ -263,9 +269,10 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
         return;
       }
 
-      let imageUrl = formData.image;
-
-      // Upload featured image if file is selected
+      // CRITICAL: Always preserve the original featured image unless explicitly changed
+      let imageUrl = formData.image || imagePreview;
+      
+      // Only change the image if a new file is explicitly uploaded
       if (imageFile) {
         const uploadedUrl = await handleImageUpload(imageFile);
         if (uploadedUrl) {
@@ -274,6 +281,11 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
           setIsSaving(false);
           return;
         }
+      }
+      
+      // Final safeguard: if imageUrl is still empty, use the original project image
+      if (!imageUrl && imagePreview) {
+        imageUrl = imagePreview;
       }
 
       // Upload new gallery images and combine with existing ones
