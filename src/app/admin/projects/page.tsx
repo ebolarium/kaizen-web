@@ -43,10 +43,10 @@ export default function AdminProjects() {
         // Flatten all projects into a single array
         const allProjects: Project[] = [
           ...data.local.map((project: any) => ({ ...project, category: 'Local' })),
-          ...data.erasmus.k1.k152.map((project: any) => ({ ...project, category: 'Erasmus K1 K152' })),
-          ...data.erasmus.k1.k153.map((project: any) => ({ ...project, category: 'Erasmus K1 K153' })),
-          ...data.erasmus.k2.k210.map((project: any) => ({ ...project, category: 'Erasmus K2 K210' })),
-          ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus K2 K220' }))
+          ...data.erasmus.k1.k152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
+          ...data.erasmus.k1.k153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
+          ...data.erasmus.k2.ka210.map((project: any) => ({ ...project, category: 'Erasmus+ KA210' })),
+          ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus+ KA220' }))
         ];
 
         setProjects(allProjects);
@@ -68,7 +68,7 @@ export default function AdminProjects() {
       case 'draft':
         return 'bg-yellow-100 text-yellow-800';
       case 'completed':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }

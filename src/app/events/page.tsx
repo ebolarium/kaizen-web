@@ -16,6 +16,7 @@ export default function Events() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
               Events and Trainings
             </h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Discover our local community events and training programs that bring people together for education, culture, and social development.
             </p>

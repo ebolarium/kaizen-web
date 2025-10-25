@@ -439,10 +439,10 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                   >
                     <option value="local">Local Events</option>
-                    <option value="k152">Erasmus K1 K152</option>
-                    <option value="k153">Erasmus K1 K153</option>
-                    <option value="k210">Erasmus K2 K210</option>
-                    <option value="k220">Erasmus K2 K220</option>
+                    <option value="k152">Erasmus+ KA152</option>
+                    <option value="k153">Erasmus+ KA153</option>
+                    <option value="ka210">Erasmus+ KA210</option>
+                    <option value="k220">Erasmus+ KA220</option>
                   </select>
                 </div>
 

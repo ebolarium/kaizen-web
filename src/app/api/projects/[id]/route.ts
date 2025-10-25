@@ -56,10 +56,10 @@ function findProjectById(data: any, id: string) {
     }
   }
   
-  // Search in K210 projects
-  for (let i = 0; i < data.erasmus.k2.k210.length; i++) {
-    if (data.erasmus.k2.k210[i].id === id) {
-      return { project: data.erasmus.k2.k210[i], category: 'k210', index: i };
+  // Search in KA210 projects
+  for (let i = 0; i < data.erasmus.k2.ka210.length; i++) {
+    if (data.erasmus.k2.ka210[i].id === id) {
+      return { project: data.erasmus.k2.ka210[i], category: 'ka210', index: i };
     }
   }
   
@@ -155,8 +155,8 @@ export async function PUT(
       data.erasmus.k1.k152[result.index] = updatedProject;
     } else if (result.category === 'k153') {
       data.erasmus.k1.k153[result.index] = updatedProject;
-    } else if (result.category === 'k210') {
-      data.erasmus.k2.k210[result.index] = updatedProject;
+    } else if (result.category === 'ka210') {
+      data.erasmus.k2.ka210[result.index] = updatedProject;
     } else if (result.category === 'k220') {
       data.erasmus.k2.k220[result.index] = updatedProject;
     }
@@ -211,8 +211,8 @@ export async function DELETE(
       deletedProject = data.erasmus.k1.k152.splice(result.index, 1)[0];
     } else if (result.category === 'k153') {
       deletedProject = data.erasmus.k1.k153.splice(result.index, 1)[0];
-    } else if (result.category === 'k210') {
-      deletedProject = data.erasmus.k2.k210.splice(result.index, 1)[0];
+    } else if (result.category === 'ka210') {
+      deletedProject = data.erasmus.k2.ka210.splice(result.index, 1)[0];
     } else if (result.category === 'k220') {
       deletedProject = data.erasmus.k2.k220.splice(result.index, 1)[0];
     }

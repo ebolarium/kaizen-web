@@ -91,13 +91,13 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
       case 'local':
         return { name: 'Local Events', color: 'blue', path: '/projects/local' };
       case 'k152':
-        return { name: 'Erasmus K1 K152', color: 'green', path: '/projects/erasmus/k1/k152' };
+        return { name: 'Erasmus+ KA152', color: 'green', path: '/projects/erasmus/k1/k152' };
       case 'k153':
-        return { name: 'Erasmus K1 K153', color: 'green', path: '/projects/erasmus/k1/k153' };
-      case 'k210':
-        return { name: 'Erasmus K2 K210', color: 'purple', path: '/projects/erasmus/k2/k210' };
+        return { name: 'Erasmus+ KA153', color: 'green', path: '/projects/erasmus/k1/k153' };
+      case 'ka210':
+        return { name: 'Erasmus+ KA210', color: 'purple', path: '/projects/erasmus/k2/ka210' };
       case 'k220':
-        return { name: 'Erasmus K2 K220', color: 'purple', path: '/projects/erasmus/k2/k220' };
+        return { name: 'Erasmus+ KA220', color: 'purple', path: '/projects/erasmus/k2/k220' };
       default:
         return { name: 'Project', color: 'gray', path: '/projects' };
     }
@@ -139,35 +139,21 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                 <div className="flex flex-wrap gap-4 pt-4">
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-medium text-gray-500">Type:</span>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      project.category === 'k210' 
-                        ? 'bg-purple-100 text-purple-800' 
-                        : project.category === 'k220'
-                        ? 'bg-purple-100 text-purple-800'
-                        : project.category === 'k152'
-                        ? 'bg-green-100 text-green-800'
-                        : project.category === 'k153'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-blue-100 text-blue-800'
-                    }`}>
+                    <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                       {categoryInfo.name}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-medium text-gray-500">Status:</span>
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      project.status === 'completed' 
+                      project.status === 'active' 
                         ? 'bg-green-100 text-green-800' 
-                        : project.status === 'active'
-                        ? 'bg-blue-100 text-blue-800'
+                        : project.status === 'completed'
+                        ? 'bg-gray-100 text-gray-800'
                         : 'bg-gray-100 text-gray-800'
                     }`}>
                       {project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
                     </span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-gray-500">Date:</span>
-                    <span className="text-sm text-gray-600">{new Date(project.date).toLocaleDateString()}</span>
                   </div>
                 </div>
               </div>

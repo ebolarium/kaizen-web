@@ -62,7 +62,7 @@ export default function Home() {
     ...projects.local,
     ...projects.erasmus.k1.k152,
     ...projects.erasmus.k1.k153,
-    ...projects.erasmus.k2.k210,
+    ...projects.erasmus.k2.ka210,
     ...projects.erasmus.k2.k220
   ];
   
@@ -85,16 +85,16 @@ export default function Home() {
       <section className="relative bg-cover bg-no-repeat text-white" style={{backgroundImage: 'url(/images/home_page_hero.JPG)', backgroundPosition: 'center bottom'}}>
         {/* Dark overlay for better text readability */}
         <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-                <h2 className="text-8xl font-bold text-white tracking-widest" style={{fontFamily: 'TT Firs Neue, sans-serif'}}>
-                  KAIZEN
-                </h2>
+<h2 className="text-5xl md:text-8xl font-bold text-white tracking-widest" style={{fontFamily: 'TT Firs Neue, sans-serif'}}>
+  KAIZEN
+</h2>
             </div>
-              <h1 className="text-xl md:text-2xl font-bold mb-6 text-white max-w-6xl mx-auto typewriter" style={{fontFamily: 'Candara, sans-serif'}}>
-                Intercultural Communication and Educational Research Association
-              </h1>
+<h1 className="text-base md:text-2xl font-bold mb-6 text-white max-w-6xl mx-auto typewriter" style={{fontFamily: 'Candara, sans-serif'}}>
+  Intercultural Communication and Educational Research Association
+</h1>
           </div>
         </div>
       </section>
@@ -108,22 +108,23 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
               About Us
             </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
           </div>
-          <div className="flex items-center gap-8">
-            {/* Logo - 20% */}
-            <div className="w-1/5 flex justify-center">
-              <Image
-                src="/images/logo.png"
-                alt="Kaizen Logo"
-                width={180}
-                height={180}
-                className="w-48 h-48 object-contain"
-              />
-            </div>
+<div className="flex flex-col md:flex-row items-center gap-8">
+  {/* Logo - sadece md ve üstü */}
+  <div className="hidden md:flex md:w-1/5 justify-center">
+    <Image
+      src="/images/logo.png"
+      alt="Kaizen Logo"
+      width={180}
+      height={180}
+      className="w-48 h-48 object-contain"
+    />
+  </div>
             
-            {/* Text - 80% */}
-            <div className="w-4/5">
-              <p className="text-lg text-gray-700 leading-relaxed">
+  {/* Text */}
+  <div className="w-full md:w-4/5">
+    <p className="text-lg text-gray-700 leading-relaxed">
               KAIZEN started its activities in 2023 as a non governmental organization in Adana, Turkiye.
               The founders of the association
               are experienced in international projects such as Erasmus+,
@@ -150,68 +151,6 @@ groups especially with youth.
         </div>
       </section>
 
-      {/* Latest Events */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-              Latest Events
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover our most recent events.
-            </p>
-          </div>
-          
-          {latestEvents.length > 0 ? (
-            <div className="grid md:grid-cols-3 gap-8">
-              {latestEvents.map((event: any) => (
-                <article key={event.id} className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-                  <div className="h-48 bg-gradient-to-r from-blue-400 to-green-400 rounded-lg mb-4 flex items-center justify-center">
-                    {event.image ? (
-            <Image
-                        src={event.image}
-                        alt={event.title}
-                        width={200}
-                        height={200}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                    ) : (
-                      <div className="text-white text-center">
-                        <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-2">
-                          <span className="text-2xl font-bold">{event.title.charAt(0)}</span>
-                        </div>
-                        <p className="text-sm opacity-80">Event Image</p>
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{event.title}</h3>
-                  <p className="text-gray-600 mb-4">{event.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</span>
-                    <Link 
-                      href={`/projects/${event.id}`}
-                      className="text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-200"
-                    >
-                      Learn More →
-                    </Link>
-                  </div>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <p className="text-gray-500 text-lg">No events available at the moment.</p>
-              <p className="text-gray-400 text-sm mt-2">Check back soon for upcoming events!</p>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* Latest Activities */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -219,6 +158,7 @@ groups especially with youth.
             <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
               Project Updates
             </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Stay updated with our recent project activities and progress.
             </p>
@@ -285,6 +225,69 @@ groups especially with youth.
               </div>
               <p className="text-gray-500 text-lg">No activities available at the moment.</p>
               <p className="text-gray-400 text-sm mt-2">Check back soon for project updates!</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Latest Events */}
+      <section className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
+              Latest Events
+            </h2>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover our most recent local and online events.
+            </p>
+          </div>
+          
+          {latestEvents.length > 0 ? (
+            <div className="grid md:grid-cols-3 gap-8">
+              {latestEvents.map((event: any) => (
+                <article key={event.id} className="bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
+                  <div className="h-48 bg-gradient-to-r from-blue-400 to-green-400 rounded-lg mb-4 flex items-center justify-center">
+                    {event.image ? (
+            <Image
+                        src={event.image}
+                        alt={event.title}
+                        width={200}
+                        height={200}
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    ) : (
+                      <div className="text-white text-center">
+                        <div className="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-2">
+                          <span className="text-2xl font-bold">{event.title.charAt(0)}</span>
+                        </div>
+                        <p className="text-sm opacity-80">Event Image</p>
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{event.title}</h3>
+                  <p className="text-gray-600 mb-4">{event.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</span>
+                    <Link 
+                      href={`/projects/${event.id}`}
+                      className="text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-200"
+                    >
+                      Learn More →
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <p className="text-gray-500 text-lg">No events available at the moment.</p>
+              <p className="text-gray-400 text-sm mt-2">Check back soon for upcoming events!</p>
             </div>
           )}
         </div>

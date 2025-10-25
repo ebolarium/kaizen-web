@@ -98,8 +98,8 @@ export async function POST(request: NextRequest) {
       data.erasmus.k1.k152.push(newProject);
     } else if (projectData.category === 'k153') {
       data.erasmus.k1.k153.push(newProject);
-    } else if (projectData.category === 'k210') {
-      data.erasmus.k2.k210.push(newProject);
+    } else if (projectData.category === 'ka210') {
+      data.erasmus.k2.ka210.push(newProject);
     } else if (projectData.category === 'k220') {
       data.erasmus.k2.k220.push(newProject);
     } else {

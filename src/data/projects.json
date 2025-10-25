@@ -43,6 +43,17 @@
           ]
         }
       ]
+    },
+    {
+      "id": "local-1761412936703",
+      "title": "Experience Exchange Meeting",
+      "description": "Young people came together, and inspiration filled the air!\nDuring Kaizen’s experience-sharing meeting, we talked about DiscoverEU and Youth Exchanges projects. \nParticipants shared their experiences, questions were answered, and new dreams were born.\nIf you want to explore Europe and take part in international projects, stay tuned!\nExciting opportunities are waiting for you!",
+      "content": "-",
+      "image": "/images/uploads/1761413235384-WhatsApp Image 2025-10-25 at 20.19.19.jpeg",
+      "gallery": [],
+      "activities": [],
+      "date": "2025-10-25",
+      "status": "completed"
     }
   ],
   "erasmus": {
@@ -51,9 +62,9 @@
       "k153": []
     },
     "k2": {
-      "k210": [
+      "ka210": [
         {
-          "id": "k210-1760619346070",
+          "id": "ka210-1760619346070",
           "title": "Let's Raise Climate Change Awareness For the Rise of Resilience!",
           "description": "Project Objective: The aim of the project is to increase awareness among young people about climate change and develop resilience in the face of earthquake and fire situations.",
           "content": "**Project Number:** 2023-1-RO01-KA210-YOU-000153810\n  \n\n**Grant Program:** Erasmus+ KA210 Small Scale Cooperation Partnership\n  \n\n**Coordinator:** Romania\n  \n\n**Partners:** Portugal\n  \n\n**Project Duration:** 01.09.2023 - 31.03.2025\n  \n\n**Project Objective:** The aim of the project is to increase awareness among young people about climate change and develop resilience in the face of earthquake and fire situations.\n\n**Activities:**\nTransnational Project Meeting: Adana, Turkey, 9-11 February 2024\nShort-Term Joint Staff Training Activity: Foscani, Romania, 6-13 April 2024\nLocal Training Activity\nThe International Youth Volunteer Corps For Climate Change (CIVYCS): Volunteer Youth Teams Against Climate Change\nShort-Term Blended Youth Mobility: Lisbon, Portugal, 19-24 August 2024\nLocal Conference Event\nDissemination Activities\n\n**Project Outputs:**\nE-Learning Platform (Open Educational Resource): A digital education module designed to increase awareness among young people about climate change and build resilience.\nDigital Games (Open Educational Resource): Digital games aiming to serve as informal learning, allowing young people to enhance their awareness of climate change and resilience.\n\n**TURKIYE MOBILITY (9th-11th February 2024)**\nThe transnational project meeting of the European Union Erasmus+ Program KA210 Youth Project \"Let's Raise Climate Change Awareness for the Rise of Resilience!\", which was eligible to receive a grant in 2023, was carried out with 3 days of work and activities. The partners, who made presentations about disaster situations in their countries and the work done, discussed what young people can do in these situations and exchanged ideas about the online training module and its content, which will form the intellectual output of the project.",
@@ -159,7 +170,7 @@
           ]
         },
         {
-          "id": "k210-1760879891017",
+          "id": "ka210-1760879891017",
           "title": "Migrant Integration Through Digital Heritage and AI Support",
           "description": "The project is supporting the integration process of immigrant students with digital cultural heritage and artificial intelligence tools.",
           "content": "**KA210 SCH Erasmus+ Project**\n\n**Project Number:** 2025-1-ES01-KA210-SCH-000351102\n\n**Grant Program:** Erasmus+ KA210 Small Scale Cooperation Partnership\n\n**Coordinator:** Spain\n\n**Partners:** Turkiye, Greece, Portugal\n\n**Project Duration:** 01.12.2025 - On going\n\n**Project Objective:** \n\n- Facilitate the integration of immigrant students into their new culture,\n- Develop awareness of cultural diversity and tolerance among local students,\n- Enhance teachers' digital and AI-based teaching skills,\n- Bring cultural heritage into the classroom with Museum-in-a-box and Heritage-in-a-box materials,\n- Create a lasting and widespread impact with the \"Connecting to EU Toolkit.\"\n\n\n**Activities:** \n- 1.TPM: Kick-Off Meeting\n- 2.Development of the \"Connecting To EU Toolkit\" including Museum/Heritage-in-a-box & Methodology Guide\n- Book for Teachers\n- 3.Capacity Training (teachers' digital competency)\n- 4.Piloting and User Testing Activity of The Toolkit\n- 5.Local activities:Migrant families, local people (integration, EU values, heritage)\n- 6.Synchronized eTwin project in ESEP enabling to spread the impact in partnership and beyond\n- 7.Evaluate impact/disseminate results (website, ESEP, events)\n\n",
@@ -167,6 +178,17 @@
           "gallery": [],
           "activities": [],
           "date": "2025-10-19",
+          "status": "active"
+        },
+        {
+          "id": "ka210-1761412183799",
+          "title": "Eco Pathway: Shaping Sustainable Green Education in Schools Empowered by AI Tools",
+          "description": "This project aims to combine sustainable green education with artificial intelligence tools.",
+          "content": "**KA210 SCH Erasmus+ Project**\n\n**Project Number:** 2025-1-PL01-KA210-SCH-000350733\n\n**Grant Program:** Erasmus+ KA210 Small Scale Cooperation Partnership\n\n**Coordinator:** Poland\n\n**Partners:** Turkiye, Slovakia\n\n**Project Duration:** 10.11.2025 - On going\n\n**Project Objective:**\n\nThe project aims to promote environmental awareness by integrating AI-supported green education into school\ncurricula. It seeks to enhance teachers' digital competencies, enabling them to use AI and Web 2.0 tools\neffectively. It fosters resilience on climate issues while engaging parents in sustainability activities. It ensures a\nlong-term impact on education via developed the Eco Pathway framework and the website.\n\n**Activities:**\n\nThe project includes capacity-building training for teachers, equipping them with AI-integrated sustainability\neducation tools. The EcoPathway framework will be developed, featuring EcoPioneer, EcoCompass, EcoGuide,\nand Sustainability Partners packages. Teachers will apply these in classrooms through interactive sustainability\nactivities, while students and parents engage in local eco-friendly initiatives. All resources will be shared via the\nEcoPathway Hub.",
+          "image": "/images/uploads/1761412183785-PlaceHolder.png",
+          "gallery": [],
+          "activities": [],
+          "date": "2025-10-25",
           "status": "active"
         }
       ],

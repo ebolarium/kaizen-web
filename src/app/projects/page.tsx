@@ -5,7 +5,7 @@ import projectsData from '@/data/projects.json';
 const projects = projectsData;
 
 export default function Projects() {
-  const erasmusK2Projects = [...projects.erasmus.k2.k210, ...projects.erasmus.k2.k220]
+  const erasmusK2Projects = [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
@@ -15,6 +15,7 @@ export default function Projects() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-4">Our Projects</h1>
+            <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
               KAIZEN focuses both domestic and international subjects on education, research, development, youth work, environment, nature, tourism, digitalization, culture, art, social entrepreneurship, innovation, active citizenship, inclusion, lifelong learning, disadvantaged groups of society, green practises, sustainability.
             </p>
@@ -88,13 +89,15 @@ export default function Projects() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {project.id.includes('k210') ? 'K210' : 'K220'}
+                                {project.id.includes('ka210') ? 'KA210' : 'KA220'}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                project.status === 'completed' 
+                                project.status === 'active' 
                                   ? 'bg-green-100 text-green-800' 
+                                  : project.status === 'completed'
+                                  ? 'bg-gray-100 text-gray-800'
                                   : project.status === 'ongoing'
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : 'bg-gray-100 text-gray-800'
