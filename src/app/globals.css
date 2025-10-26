@@ -25,14 +25,65 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Typewriter animation */
+/* Typewriter animation for single line (desktop) */
 .typewriter {
   overflow: hidden;
   white-space: nowrap;
   animation: typing 6s steps(70, end);
+  width: 100%;
 }
 
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
+}
+
+/* Typewriter animation for two lines (mobile) */
+@media (max-width: 767px) {
+  .typewriter {
+    white-space: normal;
+    animation: none;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .typewriter span:first-child {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typingFirstLine 3s steps(40, end) forwards;
+    width: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .typewriter span:last-child {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typingSecondLine 3s steps(30, end) 3s forwards;
+    width: 0;
+    opacity: 0;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  @keyframes typingFirstLine {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  @keyframes typingSecondLine {
+    0% { 
+      width: 0; 
+      opacity: 0;
+    }
+    1% { 
+      opacity: 1;
+    }
+    100% { 
+      width: 100%; 
+      opacity: 1;
+    }
+  }
 }

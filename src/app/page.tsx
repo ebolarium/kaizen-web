@@ -93,7 +93,8 @@ export default function Home() {
 </h2>
             </div>
 <h1 className="text-base md:text-2xl font-bold mb-6 text-white max-w-6xl mx-auto typewriter" style={{fontFamily: 'Candara, sans-serif'}}>
-  Intercultural Communication and Educational Research Association
+  <span className="block md:inline">Intercultural Communication and</span>
+  <span className="block md:inline"> Educational Research Association</span>
 </h1>
           </div>
         </div>
