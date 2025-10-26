@@ -204,9 +204,6 @@ groups especially with youth.
                     __html: activity.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>') 
                   }} />
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
-                      {new Date(parseInt(activity.id)).toLocaleDateString()}
-                    </span>
                     <Link 
                       href={`/projects/${activity.projectId}`}
                       className="text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-200"
@@ -269,7 +266,6 @@ groups especially with youth.
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">{event.title}</h3>
                   <p className="text-gray-600 mb-4">{event.description}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">{new Date(event.date).toLocaleDateString()}</span>
                     <Link 
                       href={`/projects/${event.id}`}
                       className="text-blue-600 font-semibold hover:text-blue-800 transition-colors duration-200"

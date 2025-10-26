@@ -50,9 +50,6 @@ export default function Events() {
                       {event.description}
                     </p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-500">
-                        {new Date(event.date).toLocaleDateString()}
-                      </span>
                       <span className="text-blue-600 font-semibold group-hover:text-blue-800 transition-colors duration-200">
                         Learn More →
                       </span>
