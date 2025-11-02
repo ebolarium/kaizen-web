@@ -17,7 +17,7 @@ interface BlogPost {
 
 async function getPost(id: string): Promise<BlogPost | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/posts/${id}`, {
+    const response = await fetch(`/api/posts/${id}`, {
       cache: 'no-store'
     });
     

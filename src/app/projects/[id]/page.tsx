@@ -23,7 +23,7 @@ interface Project {
 
 async function getProject(id: string): Promise<Project | null> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/projects/${id}`, {
+    const response = await fetch(`/api/projects/${id}`, {
       cache: 'no-store',
       headers: {
         'Cache-Control': 'no-cache',

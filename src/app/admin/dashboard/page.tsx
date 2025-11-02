@@ -222,6 +222,7 @@ export default function AdminDashboard() {
                   </svg>
                 </Link>
                 
+                {/* Create New Post button deactivated
                 <Link 
                   href="/admin/posts/new"
                   className="flex items-center justify-between p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200"
@@ -234,6 +235,7 @@ export default function AdminDashboard() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </Link>
+                */}
               </div>
             </div>
           </div>
