@@ -4,6 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+interface Event {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
 export default function Events() {
   const [projects, setProjects] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,7 +75,7 @@ export default function Events() {
           
           {localEvents.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {localEvents.map((event) => (
+              {localEvents.map((event: Event) => (
                 <Link 
                   key={event.id} 
                   href={`/projects/${event.id}`}
