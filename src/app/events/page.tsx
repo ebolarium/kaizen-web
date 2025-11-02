@@ -1,10 +1,54 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import projectsData from '@/data/projects.json';
-
-const projects = projectsData;
 
 export default function Events() {
+  const [projects, setProjects] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('/api/projects', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setProjects(data);
+        } else {
+          console.error('API response not ok:', response.status);
+          // Fallback to static data
+          const projectsData = await import('@/data/projects.json');
+          setProjects(projectsData.default);
+        }
+      } catch (error) {
+        console.error('Error fetching projects:', error);
+        // Fallback to static data
+        const projectsData = await import('@/data/projects.json');
+        setProjects(projectsData.default);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProjects();
+  }, []);
+
+  if (isLoading || !projects) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
   const localEvents = projects.local;
 
   return (
