@@ -82,10 +82,10 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative bg-cover bg-no-repeat text-white" style={{backgroundImage: 'url(/images/home_page_hero.JPG)', backgroundPosition: 'center bottom'}}>
+      <section className="relative bg-cover bg-no-repeat bg-center text-white min-h-[60vh] md:min-h-[70vh] overflow-hidden bg-gray-900" style={{backgroundImage: 'url(/images/home_page_hero.JPG)', backgroundPosition: 'center center', backgroundSize: 'cover'}}>
         {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0" style={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20">
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20 h-full">
           <div className="text-center">
             <div className="flex justify-center mb-6">
 <h2 className="text-5xl md:text-8xl font-bold text-white tracking-widest" style={{fontFamily: 'TT Firs Neue, sans-serif'}}>
@@ -99,7 +99,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <br/><br/>
       {/* Content with Background */}
       <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
         {/* About Section */}
