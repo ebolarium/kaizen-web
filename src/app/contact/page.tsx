@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Contact = () => {
   return (
-    <div className="bg-[url('/images/background.png')] bg-cover bg-center bg-no-repeat">
+    <div className="min-h-screen bg-[url('/images/background.png')] bg-cover bg-center bg-no-repeat">
       <section className="bg-white/80 py-10 md:py-20">
         <div className="max-w-5xl mx-auto px-6">
           

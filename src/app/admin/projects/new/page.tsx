@@ -7,6 +7,8 @@ import RichTextEditor from '@/components/RichTextEditor';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+const WEBINAR_IMAGE_PATH = '/images/Webinar.png';
+
 export default function NewProject() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +38,7 @@ export default function NewProject() {
     images: [] as File[]
   });
   const [isUploadingActivity, setIsUploadingActivity] = useState(false);
+  const [useWebinarImage, setUseWebinarImage] = useState(false);
 
   const handleImageUpload = async (file: File) => {
     setIsUploading(true);
@@ -76,6 +79,11 @@ export default function NewProject() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (useWebinarImage) {
+      setUseWebinarImage(false);
+      setFormData(prev => ({ ...prev, image: '' }));
+    }
+
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
@@ -98,6 +106,20 @@ export default function NewProject() {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUseWebinarImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setUseWebinarImage(checked);
+
+    if (checked) {
+      setImageFile(null);
+      setImagePreview(WEBINAR_IMAGE_PATH);
+      setFormData(prev => ({ ...prev, image: WEBINAR_IMAGE_PATH }));
+    } else {
+      setImagePreview('');
+      setFormData(prev => ({ ...prev, image: '' }));
     }
   };
 
@@ -371,6 +393,18 @@ export default function NewProject() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Featured Image
                 </label>
+                <div className="flex items-center mb-4">
+                  <input
+                    id="useWebinarImage"
+                    type="checkbox"
+                    checked={useWebinarImage}
+                    onChange={handleUseWebinarImageChange}
+                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label htmlFor="useWebinarImage" className="ml-2 text-sm text-gray-700">
+                    Use default webinar thumbnail
+                  </label>
+                </div>
                 
                 {/* File Upload */}
                 <div className="mb-4">
@@ -379,6 +413,7 @@ export default function NewProject() {
                     id="imageFile"
                     accept="image/*"
                     onChange={handleFileChange}
+                    disabled={useWebinarImage}
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   <p className="mt-1 text-sm text-gray-500">
