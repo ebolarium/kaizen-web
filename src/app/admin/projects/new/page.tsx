@@ -20,6 +20,7 @@ export default function NewProject() {
     image: '',
     category: 'local',
     status: 'active',
+    padletUrl: '',
     activities: []
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -367,6 +368,25 @@ export default function NewProject() {
                   placeholder="Detailed description of the project..."
                   height={300}
                 />
+              </div>
+
+              {/* Padlet URL */}
+              <div>
+                <label htmlFor="padletUrl" className="block text-sm font-medium text-gray-700 mb-2">
+                  Padlet URL (Optional)
+                </label>
+                <input
+                  type="url"
+                  id="padletUrl"
+                  name="padletUrl"
+                  value={formData.padletUrl}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  placeholder="https://padlet.com/..."
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  Enter the full URL of the Padlet board to embed it on the project page.
+                </p>
               </div>
 
               {/* Category and Status */}

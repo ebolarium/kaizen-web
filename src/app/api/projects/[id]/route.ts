@@ -57,7 +57,8 @@ export async function GET(
       })),
       date: project.date.toISOString().split('T')[0],
       status: project.status,
-      ...(project.partners && { partners: project.partners })
+      ...(project.partners && { partners: project.partners }),
+      ...(project.padletUrl && { padletUrl: project.padletUrl })
     }, {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -120,6 +121,9 @@ export async function PUT(
     if (projectData.partners) {
       project.partners = projectData.partners;
     }
+    if (projectData.padletUrl !== undefined) {
+      project.padletUrl = projectData.padletUrl;
+    }
 
     await project.save();
 
@@ -140,7 +144,8 @@ export async function PUT(
         })),
         date: project.date.toISOString().split('T')[0],
         status: project.status,
-        ...(project.partners && { partners: project.partners })
+        ...(project.partners && { partners: project.partners }),
+        ...(project.padletUrl && { padletUrl: project.padletUrl })
       }
     });
 
@@ -197,7 +202,8 @@ export async function DELETE(
         })),
         date: project.date.toISOString().split('T')[0],
         status: project.status,
-        ...(project.partners && { partners: project.partners })
+        ...(project.partners && { partners: project.partners }),
+        ...(project.padletUrl && { padletUrl: project.padletUrl })
       }
     });
 

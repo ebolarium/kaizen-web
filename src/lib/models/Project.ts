@@ -20,6 +20,7 @@ export interface IProject extends Document {
     date: Date;
     status: 'active' | 'completed' | 'ongoing';
     partners?: string[];
+    padletUrl?: string; // New optional field for Padlet integration
     createdAt: Date;
     updatedAt: Date;
 }
@@ -100,6 +101,11 @@ const ProjectSchema: Schema = new Schema(
         partners: {
             type: [String],
             default: undefined,
+        },
+        padletUrl: {
+            type: String,
+            default: undefined,
+            trim: true,
         },
     },
     {

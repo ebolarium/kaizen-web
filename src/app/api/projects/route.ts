@@ -48,7 +48,8 @@ export async function GET() {
           })),
           date: p.date.toISOString().split('T')[0],
           status: p.status,
-          ...(p.partners && { partners: p.partners })
+          ...(p.partners && { partners: p.partners }),
+          ...(p.padletUrl && { padletUrl: p.padletUrl })
         })),
       erasmus: {
         k1: {
@@ -68,7 +69,8 @@ export async function GET() {
               })),
               date: p.date.toISOString().split('T')[0],
               status: p.status,
-              ...(p.partners && { partners: p.partners })
+              ...(p.partners && { partners: p.partners }),
+              ...(p.padletUrl && { padletUrl: p.padletUrl })
             })),
           k153: projects
             .filter(p => p.category === 'k153')
@@ -86,7 +88,8 @@ export async function GET() {
               })),
               date: p.date.toISOString().split('T')[0],
               status: p.status,
-              ...(p.partners && { partners: p.partners })
+              ...(p.partners && { partners: p.partners }),
+              ...(p.padletUrl && { padletUrl: p.padletUrl })
             }))
         },
         k2: {
@@ -106,7 +109,8 @@ export async function GET() {
               })),
               date: p.date.toISOString().split('T')[0],
               status: p.status,
-              ...(p.partners && { partners: p.partners })
+              ...(p.partners && { partners: p.partners }),
+              ...(p.padletUrl && { padletUrl: p.padletUrl })
             })),
           k220: projects
             .filter(p => p.category === 'k220')
@@ -124,7 +128,8 @@ export async function GET() {
               })),
               date: p.date.toISOString().split('T')[0],
               status: p.status,
-              ...(p.partners && { partners: p.partners })
+              ...(p.partners && { partners: p.partners }),
+              ...(p.padletUrl && { padletUrl: p.padletUrl })
             }))
         }
       }
@@ -187,7 +192,8 @@ export async function POST(request: NextRequest) {
       })),
       date: new Date(),
       status: projectData.status || 'active',
-      ...(projectData.partners && { partners: projectData.partners })
+      ...(projectData.partners && { partners: projectData.partners }),
+      ...(projectData.padletUrl && { padletUrl: projectData.padletUrl })
     });
 
     // Return in original format
@@ -207,7 +213,8 @@ export async function POST(request: NextRequest) {
         })),
         date: newProject.date.toISOString().split('T')[0],
         status: newProject.status,
-        ...(newProject.partners && { partners: newProject.partners })
+        ...(newProject.partners && { partners: newProject.partners }),
+        ...(newProject.padletUrl && { padletUrl: newProject.padletUrl })
       }
     });
 

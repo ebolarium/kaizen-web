@@ -19,6 +19,7 @@ interface Project {
   status: string;
   partners?: string[];
   category: string;
+  padletUrl?: string;
 }
 
 async function getProject(id: string): Promise<Project | null> {
@@ -30,11 +31,11 @@ async function getProject(id: string): Promise<Project | null> {
         'Pragma': 'no-cache'
       }
     });
-    
+
     if (!response.ok) {
       return null;
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error fetching project:', error);
@@ -121,15 +122,15 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
             <div className="grid grid-cols-1 lg:grid-cols-10 gap-8 items-center">
               {/* Featured Image - Left 30% */}
               <div className="lg:col-span-3 aspect-square bg-gray-200 rounded-xl overflow-hidden shadow-lg">
-                <Image 
-                  src={project.image} 
+                <Image
+                  src={project.image}
                   alt={project.title}
                   width={400}
                   height={400}
                   className="w-full h-full object-contain"
                 />
               </div>
-              
+
               {/* Short Description - Right 70% */}
               <div className="lg:col-span-7 space-y-4">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">{project.title}</h2>
@@ -145,13 +146,12 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="text-sm font-medium text-gray-500">Status:</span>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      project.status === 'active' 
-                        ? 'bg-green-100 text-green-800' 
-                        : project.status === 'completed'
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${project.status === 'active'
+                      ? 'bg-green-100 text-green-800'
+                      : project.status === 'completed'
                         ? 'bg-gray-100 text-gray-800'
                         : 'bg-gray-100 text-gray-800'
-                    }`}>
+                      }`}>
                       {project.status?.charAt(0).toUpperCase() + project.status?.slice(1)}
                     </span>
                   </div>
@@ -168,7 +168,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
           <div className="prose prose-lg max-w-none">
             <div className="text-gray-800 leading-relaxed">
               <div className="prose prose-lg max-w-none">
-                <ReactMarkdown 
+                <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
                 >
                   {project.content}
@@ -179,13 +179,30 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
         </div>
       </section>
 
+      {/* Padlet Embed */}
+      {project.padletUrl && (
+        <section className="py-12 bg-gray-50 border-t border-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Project Board</h3>
+            <div className="w-full h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+              <iframe
+                src={project.padletUrl}
+                className="w-full h-full border-0"
+                allow="camera;microphone;geolocation;display-capture;clipboard-write"
+                title="Padlet Board"
+              ></iframe>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Image Gallery */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="py-12 bg-gray-50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <ImageSlider 
-              images={project.gallery} 
-              title={`${project.title} Gallery`} 
+            <ImageSlider
+              images={project.gallery}
+              title={`${project.title} Gallery`}
             />
           </div>
         </section>
