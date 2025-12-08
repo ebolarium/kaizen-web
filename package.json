@@ -11,6 +11,7 @@
     "lint:fix": "eslint . --fix",
     "backup": "ts-node scripts/backup-json.ts",
     "migrate": "ts-node scripts/migrate-to-db.ts",
+    "migrate-images": "ts-node scripts/migrate-images-to-firebase.ts",
     "check-db": "ts-node scripts/check-db.ts"
   },
   "engines": {
@@ -24,6 +25,7 @@
     "@uiw/react-md-editor": "^4.0.8",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
+    "firebase": "^12.6.0",
     "framer-motion": "^12.23.24",
     "jsonwebtoken": "^9.0.2",
     "lottie-react": "^2.4.1",

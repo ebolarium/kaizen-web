@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
 import jwt from 'jsonwebtoken';
+import { uploadToFirebase } from '@/lib/firebase/storage';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -38,30 +37,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: 'File too large' }, { status: 400 });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    // Create filename with timestamp to avoid conflicts
-    const timestamp = Date.now();
-    const filename = `${timestamp}-${file.name}`;
-    
-    // Determine upload directory based on file type
-    const uploadDir = join(process.cwd(), 'public', 'images', 'uploads');
-    
-    // Ensure directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (error) {
-      // Directory might already exist
-    }
-
-    const path = join(uploadDir, filename);
-    await writeFile(path, buffer);
+    // Upload to Firebase Storage
+    const downloadURL = await uploadToFirebase(file, 'projects');
 
     return NextResponse.json({
       message: 'File uploaded successfully',
-      filename: filename,
-      url: `/images/uploads/${filename}`
+      filename: file.name,
+      url: downloadURL
     });
 
   } catch (error) {
