@@ -23,17 +23,12 @@ function verifyAdminToken(request: NextRequest) {
 // GET - Get all projects (public access)
 export async function GET() {
   try {
-    console.log('🔍 GET /api/projects called');
 
     // Connect to database
-    console.log('📡 Connecting to MongoDB...');
     await connectDB();
-    console.log('✅ Connected to MongoDB');
 
     // Fetch all projects
-    console.log('📂 Fetching projects from database...');
     const projects = await Project.find({}).sort({ date: -1 });
-    console.log(`📊 Found ${projects.length} projects in database`);
 
     // Transform to match original JSON structure
     const data = {
