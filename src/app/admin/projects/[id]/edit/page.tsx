@@ -55,6 +55,8 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
     images: [] as File[]
   });
   const [isUploadingActivity, setIsUploadingActivity] = useState(false);
+  const [useWebinarImage, setUseWebinarImage] = useState(false);
+  const [usePlaceholder, setUsePlaceholder] = useState(false);
 
   useEffect(() => {
     loadProject();
@@ -84,7 +86,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
           category: project.category,
           status: project.status
         });
-        
+
         // Set image preview if image exists
         if (project.image) {
           setImagePreview(project.image);
@@ -149,6 +151,15 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (useWebinarImage) {
+      setUseWebinarImage(false);
+      setFormData(prev => ({ ...prev, image: '' }));
+    }
+    if (usePlaceholder) {
+      setUsePlaceholder(false);
+      setFormData(prev => ({ ...prev, image: '' }));
+    }
+
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
@@ -164,13 +175,41 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
       }
 
       setImageFile(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
+    }
+  };
+
+  const handleUseWebinarImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setUseWebinarImage(checked);
+
+    if (checked) {
+      setUsePlaceholder(false);
+      setImageFile(null);
+      setImagePreview('/images/Webinar.png');
+      setFormData(prev => ({ ...prev, image: '/images/Webinar.png' }));
+    } else {
+      setImagePreview(formData.image);
+    }
+  };
+
+  const handleUsePlaceholderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setUsePlaceholder(checked);
+
+    if (checked) {
+      setUseWebinarImage(false);
+      setImageFile(null);
+      setImagePreview('/images/uploads/PlaceHolder.png');
+      setFormData(prev => ({ ...prev, image: '/images/uploads/PlaceHolder.png' }));
+    } else {
+      setImagePreview(formData.image);
     }
   };
 
@@ -190,7 +229,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
       }
 
       setGalleryFiles(prev => [...prev, ...files]);
-      
+
       // Create previews
       files.forEach(file => {
         const reader = new FileReader();
@@ -240,7 +279,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
 
       setActivities([...activities, activity]);
       setNewActivity({ content: '', images: [] });
-      
+
       // CRITICAL: Preserve the original featured image - never change it when adding activities
       const originalImage = imagePreview || formData.image;
       if (originalImage) {
@@ -271,7 +310,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
 
       // CRITICAL: Always preserve the original featured image unless explicitly changed
       let imageUrl = formData.image || imagePreview;
-      
+
       // Only change the image if a new file is explicitly uploaded
       if (imageFile) {
         const uploadedUrl = await handleImageUpload(imageFile);
@@ -282,7 +321,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
           return;
         }
       }
-      
+
       // Final safeguard: if imageUrl is still empty, use the original project image
       if (!imageUrl && imagePreview) {
         imageUrl = imagePreview;
@@ -469,7 +508,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Featured Image
                 </label>
-                
+
                 {/* Current Image */}
                 {formData.image && !imageFile && (
                   <div className="mb-4">
@@ -482,13 +521,41 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   </div>
                 )}
 
+                {/* Checkbox Options */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center">
+                    <input
+                      id="useWebinarImage"
+                      type="checkbox"
+                      checked={useWebinarImage}
+                      onChange={handleUseWebinarImageChange}
+                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="useWebinarImage" className="ml-2 text-sm text-gray-700">
+                      Use default webinar thumbnail
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="usePlaceholder"
+                      type="checkbox"
+                      checked={usePlaceholder}
+                      onChange={handleUsePlaceholderChange}
+                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="usePlaceholder" className="ml-2 text-sm text-gray-700">
+                      Use default placeholder image
+                    </label>
+                  </div>
+                </div>
+
                 {/* File Upload */}
                 <div className="mb-4">
                   <input
                     type="file"
                     id="imageFile"
                     accept="image/*"
-                    onChange={handleFileChange}
+                    disabled={useWebinarImage || usePlaceholder}
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   <p className="mt-1 text-sm text-gray-500">
@@ -515,7 +582,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gallery Images
                 </label>
-                
+
                 {/* Existing Gallery Images */}
                 {existingGallery.length > 0 && (
                   <div className="mb-4">
@@ -596,7 +663,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   {activities.length} {activities.length === 1 ? 'activity' : 'activities'} added
                 </div>
               </div>
-              
+
               {/* Add New Activity */}
               <div className="border border-dashed border-gray-300 rounded-lg p-4 mb-6 hover:border-gray-400 transition-colors">
                 <h4 className="text-md font-medium text-gray-700 mb-4 flex items-center">
@@ -605,7 +672,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   </svg>
                   Add New Activity
                 </h4>
-                
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
