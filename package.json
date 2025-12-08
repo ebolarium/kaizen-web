@@ -5,7 +5,7 @@
   "description": "Kaizen Education NGO website with admin panel for project and blog management",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max_old_space_size=2048' next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
