@@ -1,0 +1,15 @@
+{
+  "posts": [
+    {
+      "id": "post-1760596096995",
+      "title": "Hello World",
+      "excerpt": "This is the first blog post from Kaizen admin",
+      "content": "This is the first blog post from Kaizen admin",
+      "image": "/images/blog/default.jpg",
+      "author": "Admin",
+      "date": "2025-10-16",
+      "tags": [],
+      "published": true
+    }
+  ]
+}

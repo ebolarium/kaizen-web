@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
+import connectDB from '@/lib/db/mongodb';
+import Project from '@/lib/models/Project';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -20,23 +20,121 @@ function verifyAdminToken(request: NextRequest) {
   }
 }
 
-// Helper function to read projects
-function readProjects() {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContents);
-}
-
-// Helper function to write projects
-function writeProjects(data: any) {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'projects.json');
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-
 // GET - Get all projects (public access)
 export async function GET() {
   try {
-    const data = readProjects();
+    console.log('🔍 GET /api/projects called');
+
+    // Connect to database
+    console.log('📡 Connecting to MongoDB...');
+    await connectDB();
+    console.log('✅ Connected to MongoDB');
+
+    // Fetch all projects
+    console.log('📂 Fetching projects from database...');
+    const projects = await Project.find({}).sort({ date: -1 });
+    console.log(`📊 Found ${projects.length} projects in database`);
+
+    // Transform to match original JSON structure
+    const data = {
+      local: projects
+        .filter(p => p.category === 'local')
+        .map(p => ({
+          id: p.projectId,
+          title: p.title,
+          description: p.description,
+          content: p.content,
+          image: p.image,
+          gallery: p.gallery,
+          activities: p.activities.map(a => ({
+            id: a.activityId,
+            content: a.content,
+            images: a.images
+          })),
+          date: p.date.toISOString().split('T')[0],
+          status: p.status,
+          ...(p.partners && { partners: p.partners })
+        })),
+      erasmus: {
+        k1: {
+          k152: projects
+            .filter(p => p.category === 'k152')
+            .map(p => ({
+              id: p.projectId,
+              title: p.title,
+              description: p.description,
+              content: p.content,
+              image: p.image,
+              gallery: p.gallery,
+              activities: p.activities.map(a => ({
+                id: a.activityId,
+                content: a.content,
+                images: a.images
+              })),
+              date: p.date.toISOString().split('T')[0],
+              status: p.status,
+              ...(p.partners && { partners: p.partners })
+            })),
+          k153: projects
+            .filter(p => p.category === 'k153')
+            .map(p => ({
+              id: p.projectId,
+              title: p.title,
+              description: p.description,
+              content: p.content,
+              image: p.image,
+              gallery: p.gallery,
+              activities: p.activities.map(a => ({
+                id: a.activityId,
+                content: a.content,
+                images: a.images
+              })),
+              date: p.date.toISOString().split('T')[0],
+              status: p.status,
+              ...(p.partners && { partners: p.partners })
+            }))
+        },
+        k2: {
+          ka210: projects
+            .filter(p => p.category === 'ka210')
+            .map(p => ({
+              id: p.projectId,
+              title: p.title,
+              description: p.description,
+              content: p.content,
+              image: p.image,
+              gallery: p.gallery,
+              activities: p.activities.map(a => ({
+                id: a.activityId,
+                content: a.content,
+                images: a.images
+              })),
+              date: p.date.toISOString().split('T')[0],
+              status: p.status,
+              ...(p.partners && { partners: p.partners })
+            })),
+          k220: projects
+            .filter(p => p.category === 'k220')
+            .map(p => ({
+              id: p.projectId,
+              title: p.title,
+              description: p.description,
+              content: p.content,
+              image: p.image,
+              gallery: p.gallery,
+              activities: p.activities.map(a => ({
+                id: a.activityId,
+                content: a.content,
+                images: a.images
+              })),
+              date: p.date.toISOString().split('T')[0],
+              status: p.status,
+              ...(p.partners && { partners: p.partners })
+            }))
+        }
+      }
+    };
+
     return NextResponse.json(data, {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -63,7 +161,7 @@ export async function POST(request: NextRequest) {
     }
 
     const projectData = await request.json();
-    
+
     // Validate required fields
     if (!projectData.title || !projectData.category) {
       return NextResponse.json(
@@ -72,49 +170,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readProjects();
-    
+    // Connect to database
+    await connectDB();
+
     // Generate new project ID
     const newId = `${projectData.category.toLowerCase()}-${Date.now()}`;
-    
+
     // Create new project
-    const newProject = {
-      id: newId,
+    const newProject = await Project.create({
+      projectId: newId,
+      category: projectData.category,
       title: projectData.title,
       description: projectData.description || '',
       content: projectData.content || '',
       image: projectData.image || '/images/Erasmus_Logo.png',
       gallery: projectData.gallery || [],
-      activities: projectData.activities || [],
-      date: new Date().toISOString().split('T')[0],
+      activities: (projectData.activities || []).map((activity: any) => ({
+        activityId: activity.id || `${Date.now()}`,
+        content: activity.content,
+        images: activity.images || []
+      })),
+      date: new Date(),
       status: projectData.status || 'active',
       ...(projectData.partners && { partners: projectData.partners })
-    };
+    });
 
-    // Add to appropriate category
-    if (projectData.category === 'local') {
-      data.local.push(newProject);
-    } else if (projectData.category === 'k152') {
-      data.erasmus.k1.k152.push(newProject);
-    } else if (projectData.category === 'k153') {
-      data.erasmus.k1.k153.push(newProject);
-    } else if (projectData.category === 'ka210') {
-      data.erasmus.k2.ka210.push(newProject);
-    } else if (projectData.category === 'k220') {
-      data.erasmus.k2.k220.push(newProject);
-    } else {
-      return NextResponse.json(
-        { message: 'Invalid category' },
-        { status: 400 }
-      );
-    }
-    
-    // Write back to file
-    writeProjects(data);
-
+    // Return in original format
     return NextResponse.json({
       message: 'Project created successfully',
-      project: newProject
+      project: {
+        id: newProject.projectId,
+        title: newProject.title,
+        description: newProject.description,
+        content: newProject.content,
+        image: newProject.image,
+        gallery: newProject.gallery,
+        activities: newProject.activities.map(a => ({
+          id: a.activityId,
+          content: a.content,
+          images: a.images
+        })),
+        date: newProject.date.toISOString().split('T')[0],
+        status: newProject.status,
+        ...(newProject.partners && { partners: newProject.partners })
+      }
     });
 
   } catch (error) {
@@ -125,3 +224,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

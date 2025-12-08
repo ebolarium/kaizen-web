@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import adminConfig from '@/data/admin-config.json';
+import connectDB from '@/lib/db/mongodb';
+import User from '@/lib/models/User';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -17,33 +18,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check credentials
-    if (username === adminConfig.admin.username) {
-      const isValidPassword = await bcrypt.compare(password, adminConfig.admin.password);
-      
-      if (isValidPassword) {
-        // Generate JWT token
-        const token = jwt.sign(
-          { username: adminConfig.admin.username, role: 'admin' },
-          JWT_SECRET,
-          { expiresIn: '24h' }
-        );
+    // Connect to database
+    await connectDB();
 
-        return NextResponse.json({
-          message: 'Login successful',
-          token,
-          user: {
-            username: adminConfig.admin.username,
-            email: adminConfig.admin.email
-          }
-        });
-      }
+    // Find user by username
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return NextResponse.json(
+        { message: 'Invalid username or password' },
+        { status: 401 }
+      );
     }
 
-    return NextResponse.json(
-      { message: 'Invalid username or password' },
-      { status: 401 }
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password);
+
+    if (!isValidPassword) {
+      return NextResponse.json(
+        { message: 'Invalid username or password' },
+        { status: 401 }
+      );
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { username: user.username, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '24h' }
     );
+
+    return NextResponse.json({
+      message: 'Login successful',
+      token,
+      user: {
+        username: user.username,
+        email: user.email
+      }
+    });
+
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
@@ -52,3 +65,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

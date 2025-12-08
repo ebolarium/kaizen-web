@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
+import connectDB from '@/lib/db/mongodb';
+import Post from '@/lib/models/Post';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -20,23 +20,30 @@ function verifyAdminToken(request: NextRequest) {
   }
 }
 
-// Helper function to read blog posts
-function readBlogPosts() {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContents);
-}
-
-// Helper function to write blog posts
-function writeBlogPosts(data: any) {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-
 // GET - Get all blog posts
 export async function GET() {
   try {
-    const data = readBlogPosts();
+    // Connect to database
+    await connectDB();
+
+    // Fetch all posts, sorted by date descending
+    const posts = await Post.find({}).sort({ date: -1 });
+
+    // Transform to match original JSON structure
+    const data = {
+      posts: posts.map(p => ({
+        id: p.postId,
+        title: p.title,
+        excerpt: p.excerpt,
+        content: p.content,
+        image: p.image,
+        author: p.author,
+        date: p.date.toISOString().split('T')[0],
+        tags: p.tags,
+        published: p.published
+      }))
+    };
+
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error reading blog posts:', error);
@@ -57,7 +64,7 @@ export async function POST(request: NextRequest) {
     }
 
     const postData = await request.json();
-    
+
     // Validate required fields
     if (!postData.title || !postData.content) {
       return NextResponse.json(
@@ -66,33 +73,39 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = readBlogPosts();
-    
+    // Connect to database
+    await connectDB();
+
     // Generate new post ID
     const newId = `post-${Date.now()}`;
-    
+
     // Create new post
-    const newPost = {
-      id: newId,
+    const newPost = await Post.create({
+      postId: newId,
       title: postData.title,
       excerpt: postData.excerpt || postData.content.substring(0, 150) + '...',
       content: postData.content,
       image: postData.image || '/images/blog/default.jpg',
       author: postData.author || 'Admin',
-      date: new Date().toISOString().split('T')[0],
+      date: new Date(),
       tags: postData.tags || [],
       published: postData.published !== undefined ? postData.published : true
-    };
+    });
 
-    // Add to posts array
-    data.posts.unshift(newPost);
-    
-    // Write back to file
-    writeBlogPosts(data);
-
+    // Return in original format
     return NextResponse.json({
       message: 'Blog post created successfully',
-      post: newPost
+      post: {
+        id: newPost.postId,
+        title: newPost.title,
+        excerpt: newPost.excerpt,
+        content: newPost.content,
+        image: newPost.image,
+        author: newPost.author,
+        date: newPost.date.toISOString().split('T')[0],
+        tags: newPost.tags,
+        published: newPost.published
+      }
     });
 
   } catch (error) {
@@ -103,4 +116,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

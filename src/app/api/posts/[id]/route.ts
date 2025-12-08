@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import jwt from 'jsonwebtoken';
+import connectDB from '@/lib/db/mongodb';
+import Post from '@/lib/models/Post';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -20,29 +20,20 @@ function verifyAdminToken(request: NextRequest) {
   }
 }
 
-// Helper function to read blog posts
-function readBlogPosts() {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
-  const fileContents = fs.readFileSync(filePath, 'utf8');
-  return JSON.parse(fileContents);
-}
-
-// Helper function to write blog posts
-function writeBlogPosts(data: any) {
-  const filePath = path.join(process.cwd(), 'src', 'data', 'blog-posts.json');
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
-
-// GET - Get specific blog post
+// GET - Get specific blog post (public access)
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const data = readBlogPosts();
-    const post = data.posts.find((p: any) => p.id === id);
-    
+
+    // Connect to database
+    await connectDB();
+
+    // Find post by postId
+    const post = await Post.findOne({ postId: id });
+
     if (!post) {
       return NextResponse.json(
         { message: 'Post not found' },
@@ -50,9 +41,20 @@ export async function GET(
       );
     }
 
-    return NextResponse.json(post);
+    // Return in original format
+    return NextResponse.json({
+      id: post.postId,
+      title: post.title,
+      excerpt: post.excerpt,
+      content: post.content,
+      image: post.image,
+      author: post.author,
+      date: post.date.toISOString().split('T')[0],
+      tags: post.tags,
+      published: post.published
+    });
   } catch (error) {
-    console.error('Error reading blog post:', error);
+    console.error('Error reading post:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }
@@ -60,7 +62,7 @@ export async function GET(
   }
 }
 
-// PUT - Update blog post
+// PUT - Update blog post (admin only)
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -74,41 +76,49 @@ export async function PUT(
 
     const { id } = await params;
     const postData = await request.json();
-    const data = readBlogPosts();
-    
-    // Find the post index
-    const postIndex = data.posts.findIndex((p: any) => p.id === id);
-    
-    if (postIndex === -1) {
+
+    // Connect to database
+    await connectDB();
+
+    // Find and update post
+    const post = await Post.findOne({ postId: id });
+
+    if (!post) {
       return NextResponse.json(
         { message: 'Post not found' },
         { status: 404 }
       );
     }
 
-    // Update the post
-    data.posts[postIndex] = {
-      ...data.posts[postIndex],
-      title: postData.title || data.posts[postIndex].title,
-      excerpt: postData.excerpt || data.posts[postIndex].excerpt,
-      content: postData.content || data.posts[postIndex].content,
-      image: postData.image || data.posts[postIndex].image,
-      author: postData.author || data.posts[postIndex].author,
-      tags: postData.tags || data.posts[postIndex].tags,
-      published: postData.published !== undefined ? postData.published : data.posts[postIndex].published,
-      updatedAt: new Date().toISOString()
-    };
-    
-    // Write back to file
-    writeBlogPosts(data);
+    // Update fields
+    post.title = postData.title || post.title;
+    post.excerpt = postData.excerpt !== undefined ? postData.excerpt : post.excerpt;
+    post.content = postData.content !== undefined ? postData.content : post.content;
+    post.image = postData.image || post.image;
+    post.author = postData.author || post.author;
+    post.tags = postData.tags !== undefined ? postData.tags : post.tags;
+    post.published = postData.published !== undefined ? postData.published : post.published;
 
+    await post.save();
+
+    // Return in original format
     return NextResponse.json({
-      message: 'Blog post updated successfully',
-      post: data.posts[postIndex]
+      message: 'Post updated successfully',
+      post: {
+        id: post.postId,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        image: post.image,
+        author: post.author,
+        date: post.date.toISOString().split('T')[0],
+        tags: post.tags,
+        published: post.published
+      }
     });
 
   } catch (error) {
-    console.error('Error updating blog post:', error);
+    console.error('Error updating post:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }
@@ -116,7 +126,7 @@ export async function PUT(
   }
 }
 
-// DELETE - Delete blog post
+// DELETE - Delete blog post (admin only)
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -129,35 +139,41 @@ export async function DELETE(
     }
 
     const { id } = await params;
-    const data = readBlogPosts();
-    
-    // Find the post index
-    const postIndex = data.posts.findIndex((p: any) => p.id === id);
-    
-    if (postIndex === -1) {
+
+    // Connect to database
+    await connectDB();
+
+    // Find and delete post
+    const post = await Post.findOneAndDelete({ postId: id });
+
+    if (!post) {
       return NextResponse.json(
         { message: 'Post not found' },
         { status: 404 }
       );
     }
 
-    // Remove the post
-    const deletedPost = data.posts.splice(postIndex, 1)[0];
-    
-    // Write back to file
-    writeBlogPosts(data);
-
+    // Return in original format
     return NextResponse.json({
-      message: 'Blog post deleted successfully',
-      post: deletedPost
+      message: 'Post deleted successfully',
+      post: {
+        id: post.postId,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        image: post.image,
+        author: post.author,
+        date: post.date.toISOString().split('T')[0],
+        tags: post.tags,
+        published: post.published
+      }
     });
 
   } catch (error) {
-    console.error('Error deleting blog post:', error);
+    console.error('Error deleting post:', error);
     return NextResponse.json(
       { message: 'Internal server error' },
       { status: 500 }
     );
   }
 }
-
