@@ -107,6 +107,7 @@ export async function PUT(
     project.description = projectData.description !== undefined ? projectData.description : project.description;
     project.content = projectData.content !== undefined ? projectData.content : project.content;
     project.image = projectData.image || project.image;
+    project.category = projectData.category || project.category;
     project.gallery = projectData.gallery !== undefined ? projectData.gallery : project.gallery;
     project.activities = projectData.activities !== undefined
       ? projectData.activities.map((activity: any) => ({
