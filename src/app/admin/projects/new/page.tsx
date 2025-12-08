@@ -39,6 +39,7 @@ export default function NewProject() {
   });
   const [isUploadingActivity, setIsUploadingActivity] = useState(false);
   const [useWebinarImage, setUseWebinarImage] = useState(false);
+  const [usePlaceholder, setUsePlaceholder] = useState(false);
 
   const handleImageUpload = async (file: File) => {
     setIsUploading(true);
@@ -83,6 +84,10 @@ export default function NewProject() {
       setUseWebinarImage(false);
       setFormData(prev => ({ ...prev, image: '' }));
     }
+    if (usePlaceholder) {
+      setUsePlaceholder(false);
+      setFormData(prev => ({ ...prev, image: '' }));
+    }
 
     const file = e.target.files?.[0];
     if (file) {
@@ -99,7 +104,7 @@ export default function NewProject() {
       }
 
       setImageFile(file);
-      
+
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -114,9 +119,25 @@ export default function NewProject() {
     setUseWebinarImage(checked);
 
     if (checked) {
+      setUsePlaceholder(false);
       setImageFile(null);
       setImagePreview(WEBINAR_IMAGE_PATH);
       setFormData(prev => ({ ...prev, image: WEBINAR_IMAGE_PATH }));
+    } else {
+      setImagePreview('');
+      setFormData(prev => ({ ...prev, image: '' }));
+    }
+  };
+
+  const handleUsePlaceholderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setUsePlaceholder(checked);
+
+    if (checked) {
+      setUseWebinarImage(false);
+      setImageFile(null);
+      setImagePreview('/images/uploads/PlaceHolder.png');
+      setFormData(prev => ({ ...prev, image: '/images/uploads/PlaceHolder.png' }));
     } else {
       setImagePreview('');
       setFormData(prev => ({ ...prev, image: '' }));
@@ -139,7 +160,7 @@ export default function NewProject() {
       }
 
       setGalleryFiles(prev => [...prev, ...files]);
-      
+
       // Create previews
       files.forEach(file => {
         const reader = new FileReader();
@@ -393,19 +414,33 @@ export default function NewProject() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Featured Image
                 </label>
-                <div className="flex items-center mb-4">
-                  <input
-                    id="useWebinarImage"
-                    type="checkbox"
-                    checked={useWebinarImage}
-                    onChange={handleUseWebinarImageChange}
-                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                  />
-                  <label htmlFor="useWebinarImage" className="ml-2 text-sm text-gray-700">
-                    Use default webinar thumbnail
-                  </label>
+                <div className="space-y-3 mb-4">
+                  <div className="flex items-center">
+                    <input
+                      id="useWebinarImage"
+                      type="checkbox"
+                      checked={useWebinarImage}
+                      onChange={handleUseWebinarImageChange}
+                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="useWebinarImage" className="ml-2 text-sm text-gray-700">
+                      Use default webinar thumbnail
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="usePlaceholder"
+                      type="checkbox"
+                      checked={usePlaceholder}
+                      onChange={handleUsePlaceholderChange}
+                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    />
+                    <label htmlFor="usePlaceholder" className="ml-2 text-sm text-gray-700">
+                      Use default placeholder image
+                    </label>
+                  </div>
                 </div>
-                
+
                 {/* File Upload */}
                 <div className="mb-4">
                   <input
@@ -413,7 +448,7 @@ export default function NewProject() {
                     id="imageFile"
                     accept="image/*"
                     onChange={handleFileChange}
-                    disabled={useWebinarImage}
+                    disabled={useWebinarImage || usePlaceholder}
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   <p className="mt-1 text-sm text-gray-500">
@@ -444,7 +479,7 @@ export default function NewProject() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gallery Images
                 </label>
-                
+
                 {/* Gallery Upload */}
                 <div className="mb-4">
                   <input
@@ -500,7 +535,7 @@ export default function NewProject() {
                   {activities.length} {activities.length === 1 ? 'activity' : 'activities'} added
                 </div>
               </div>
-              
+
               {/* Add New Activity */}
               <div className="border border-dashed border-gray-300 rounded-lg p-4 mb-6 hover:border-gray-400 transition-colors">
                 <h4 className="text-md font-medium text-gray-700 mb-4 flex items-center">
@@ -509,7 +544,7 @@ export default function NewProject() {
                   </svg>
                   Add New Activity
                 </h4>
-                
+
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
