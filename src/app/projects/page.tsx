@@ -3,15 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
-
-export const dynamic = 'force-dynamic';
 
 export default function Projects() {
   const [projects, setProjects] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const group = searchParams.get('group');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -54,29 +49,8 @@ export default function Projects() {
     );
   }
 
-  // Get all Erasmus projects (K1 and K2)
-  const allErasmusProjects = [
-    ...projects.erasmus.k1.k152,
-    ...projects.erasmus.k1.k153,
-    ...projects.erasmus.k2.ka210,
-    ...projects.erasmus.k2.k220
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  const filteredErasmusProjects = group === 'k1'
-    ? [...projects.erasmus.k1.k152, ...projects.erasmus.k1.k153]
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    : group === 'k2'
-      ? [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      : allErasmusProjects;
-
-  const getProjectType = (projectId: string) => {
-    if (projectId.includes('k152')) return 'KA152';
-    if (projectId.includes('k153')) return 'KA153';
-    if (projectId.includes('ka210')) return 'KA210';
-    if (projectId.includes('k220')) return 'KA220';
-    return 'Erasmus+';
-  };
+  const erasmusK2Projects = [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
@@ -111,38 +85,6 @@ export default function Projects() {
               </div>
               
               <div className="mb-8 mt-16">
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="inline-flex rounded-lg border border-blue-200 bg-white p-1 shadow-sm">
-                    <Link
-                      href="/projects?group=k1"
-                      className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${
-                        group === 'k1'
-                          ? 'bg-blue-600 text-white'
-                          : 'text-blue-700 hover:bg-blue-50'
-                      }`}
-                    >
-                      K1 Projects
-                    </Link>
-                    <Link
-                      href="/projects?group=k2"
-                      className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${
-                        group === 'k2'
-                          ? 'bg-blue-600 text-white'
-                          : 'text-blue-700 hover:bg-blue-50'
-                      }`}
-                    >
-                      K2 Projects
-                    </Link>
-                  </div>
-                  {(group === 'k1' || group === 'k2') && (
-                    <Link
-                      href="/projects"
-                      className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
-                    >
-                      Show all
-                    </Link>
-                  )}
-                </div>
                 {/* Projects Table */}
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="overflow-x-auto">
@@ -156,13 +98,10 @@ export default function Projects() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredErasmusProjects.map((project) => (
+                        {erasmusK2Projects.map((project) => (
                           <tr key={project.id} className="hover:bg-gray-50 transition-colors duration-200">
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <Link
-                                href={`/projects/${project.id}${group ? `?group=${group}` : ''}`}
-                                className="block"
-                              >
+                              <Link href={`/projects/${project.id}`} className="block">
                                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
                                   {project.image ? (
                                     <img 
@@ -186,7 +125,7 @@ export default function Projects() {
                             </td>
                             <td className="px-6 py-4">
                               <Link
-                                href={`/projects/${project.id}${group ? `?group=${group}` : ''}`}
+                                href={`/projects/${project.id}`}
                                 className="text-sm font-medium text-gray-900 hover:text-green-600 transition-colors duration-200"
                               >
                                 {project.title}
@@ -194,7 +133,7 @@ export default function Projects() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {getProjectType(project.id)}
+                                {project.id.includes('ka210') ? 'KA210' : 'KA220'}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
