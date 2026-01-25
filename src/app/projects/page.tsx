@@ -3,10 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 export default function Projects() {
   const [projects, setProjects] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const searchParams = useSearchParams();
+  const group = searchParams.get('group');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -49,9 +52,6 @@ export default function Projects() {
     );
   }
 
-  const erasmusK2Projects = [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
   // Get all Erasmus projects (K1 and K2)
   const allErasmusProjects = [
     ...projects.erasmus.k1.k152,
@@ -59,6 +59,14 @@ export default function Projects() {
     ...projects.erasmus.k2.ka210,
     ...projects.erasmus.k2.k220
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const filteredErasmusProjects = group === 'k1'
+    ? [...projects.erasmus.k1.k152, ...projects.erasmus.k1.k153]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    : group === 'k2'
+      ? [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      : allErasmusProjects;
 
   // Helper function to get project type label
   const getProjectType = (projectId: string) => {
@@ -115,7 +123,7 @@ export default function Projects() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {allErasmusProjects.map((project) => (
+                        {filteredErasmusProjects.map((project) => (
                           <tr key={project.id} className="hover:bg-gray-50 transition-colors duration-200">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <Link href={`/projects/${project.id}`} className="block">
