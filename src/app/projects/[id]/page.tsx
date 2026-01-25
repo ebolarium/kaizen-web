@@ -179,23 +179,6 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
         </div>
       </section>
 
-      {/* Padlet Embed */}
-      {project.padletUrl && (
-        <section className="py-12 bg-gray-50 border-t border-gray-200">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Project Board</h3>
-            <div className="w-full h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
-              <iframe
-                src={project.padletUrl}
-                className="w-full h-full border-0"
-                allow="camera;microphone;geolocation;display-capture;clipboard-write"
-                title="Padlet Board"
-              ></iframe>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Image Gallery */}
       {project.gallery && project.gallery.length > 0 && (
         <section className="py-12 bg-gray-50">
@@ -243,6 +226,23 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Padlet Embed */}
+      {project.padletUrl && (
+        <section className="py-12 bg-gray-50 border-t border-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Project Board</h3>
+            <div className="w-full h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+              <iframe
+                src={project.padletUrl}
+                className="w-full h-full border-0"
+                allow="camera;microphone;geolocation;display-capture;clipboard-write"
+                title="Padlet Board"
+              ></iframe>
             </div>
           </div>
         </section>
