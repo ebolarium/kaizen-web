@@ -3,13 +3,10 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 
 export default function Projects() {
   const [projects, setProjects] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const group = searchParams.get('group');
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -52,33 +49,11 @@ export default function Projects() {
     );
   }
 
-  // Get all Erasmus projects (K1 and K2)
-  const allErasmusProjects = [
-    ...projects.erasmus.k1.k152,
-    ...projects.erasmus.k1.k153,
-    ...projects.erasmus.k2.ka210,
-    ...projects.erasmus.k2.k220
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  const filteredErasmusProjects = group === 'k1'
-    ? [...projects.erasmus.k1.k152, ...projects.erasmus.k1.k153]
-      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    : group === 'k2'
-      ? [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-      : allErasmusProjects;
-
-  // Helper function to get project type label
-  const getProjectType = (projectId: string) => {
-    if (projectId.includes('k152')) return 'KA152';
-    if (projectId.includes('k153')) return 'KA153';
-    if (projectId.includes('ka210')) return 'KA210';
-    if (projectId.includes('k220')) return 'KA220';
-    return 'Erasmus+';
-  };
+  const erasmusK2Projects = [...projects.erasmus.k2.ka210, ...projects.erasmus.k2.k220]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed' }}>
+    <div className="bg-gradient-to-br from-blue-50 to-green-50" style={{backgroundImage: 'linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(/images/background.png)', backgroundSize: 'cover', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat', backgroundAttachment: 'fixed'}}>
       {/* Hero Section */}
       <section className="text-gray-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,7 +70,7 @@ export default function Projects() {
       {/* Project Categories */}
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
+          
           <div className="max-w-4xl mx-auto">
             {/* Erasmus Projects */}
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-8 relative">
@@ -108,8 +83,40 @@ export default function Projects() {
                   className="object-contain"
                 />
               </div>
-
+              
               <div className="mb-8 mt-16">
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="inline-flex rounded-lg border border-blue-200 bg-white p-1 shadow-sm">
+                    <Link
+                      href="/projects?group=k1"
+                      className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${
+                        group === 'k1'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-blue-700 hover:bg-blue-50'
+                      }`}
+                    >
+                      K1 Projects
+                    </Link>
+                    <Link
+                      href="/projects?group=k2"
+                      className={`px-4 py-2 text-sm font-semibold rounded-md transition-colors ${
+                        group === 'k2'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-blue-700 hover:bg-blue-50'
+                      }`}
+                    >
+                      K2 Projects
+                    </Link>
+                  </div>
+                  {(group === 'k1' || group === 'k2') && (
+                    <Link
+                      href="/projects"
+                      className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+                    >
+                      Show all
+                    </Link>
+                  )}
+                </div>
                 {/* Projects Table */}
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="overflow-x-auto">
@@ -123,14 +130,17 @@ export default function Projects() {
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredErasmusProjects.map((project) => (
+                        {erasmusK2Projects.map((project) => (
                           <tr key={project.id} className="hover:bg-gray-50 transition-colors duration-200">
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <Link href={`/projects/${project.id}`} className="block">
+                              <Link
+                                href={`/projects/${project.id}${group ? `?group=${group}` : ''}`}
+                                className="block"
+                              >
                                 <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
                                   {project.image ? (
-                                    <img
-                                      src={project.image}
+                                    <img 
+                                      src={project.image} 
                                       alt={project.title}
                                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
                                     />
@@ -150,7 +160,7 @@ export default function Projects() {
                             </td>
                             <td className="px-6 py-4">
                               <Link
-                                href={`/projects/${project.id}`}
+                                href={`/projects/${project.id}${group ? `?group=${group}` : ''}`}
                                 className="text-sm font-medium text-gray-900 hover:text-green-600 transition-colors duration-200"
                               >
                                 {project.title}
@@ -158,18 +168,19 @@ export default function Projects() {
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                {getProjectType(project.id)}
+                                {project.id.includes('ka210') ? 'KA210' : 'KA220'}
                               </span>
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${project.status === 'active'
-                                  ? 'bg-green-100 text-green-800'
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                project.status === 'active' 
+                                  ? 'bg-green-100 text-green-800' 
                                   : project.status === 'completed'
-                                    ? 'bg-gray-100 text-gray-800'
-                                    : project.status === 'ongoing'
-                                      ? 'bg-yellow-100 text-yellow-800'
-                                      : 'bg-gray-100 text-gray-800'
-                                }`}>
+                                  ? 'bg-gray-100 text-gray-800'
+                                  : project.status === 'ongoing'
+                                  ? 'bg-yellow-100 text-yellow-800'
+                                  : 'bg-gray-100 text-gray-800'
+                              }`}>
                                 {project.status?.charAt(0).toUpperCase() + project.status?.slice(1) || 'Unknown'}
                               </span>
                             </td>
@@ -180,10 +191,10 @@ export default function Projects() {
                   </div>
                 </div>
               </div>
-
+              
             </div>
           </div>
-
+          
         </div>
       </section>
 
