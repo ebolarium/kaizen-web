@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, use, Fragment } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import RichTextEditor from '@/components/RichTextEditor';
@@ -22,7 +22,6 @@ interface Project {
     content: string;
     images: string[];
   }>;
-  padletUrl?: string;
 }
 
 export default function EditProject({ params }: { params: Promise<{ id: string }> }) {
@@ -37,8 +36,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
     content: '',
     image: '',
     category: 'local',
-    status: 'active',
-    padletUrl: ''
+    status: 'active'
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
@@ -57,8 +55,14 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
     images: [] as File[]
   });
   const [isUploadingActivity, setIsUploadingActivity] = useState(false);
-  const [useWebinarImage, setUseWebinarImage] = useState(false);
-  const [usePlaceholder, setUsePlaceholder] = useState(false);
+  const [editingActivityId, setEditingActivityId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState('');
+  const [editingImages, setEditingImages] = useState<string[]>([]);
+  const [editingNewImages, setEditingNewImages] = useState<File[]>([]);
+  const [editingNewImagePreviews, setEditingNewImagePreviews] = useState<string[]>([]);
+  const [isUpdatingActivity, setIsUpdatingActivity] = useState(false);
+  const [draggingActivityId, setDraggingActivityId] = useState<string | null>(null);
+  const [dragOverActivityId, setDragOverActivityId] = useState<string | null>(null);
 
   useEffect(() => {
     loadProject();
@@ -86,10 +90,9 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
           content: project.content,
           image: project.image,
           category: project.category,
-          status: project.status,
-          padletUrl: project.padletUrl || ''
+          status: project.status
         });
-
+        
         // Set image preview if image exists
         if (project.image) {
           setImagePreview(project.image);
@@ -154,15 +157,6 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (useWebinarImage) {
-      setUseWebinarImage(false);
-      setFormData(prev => ({ ...prev, image: '' }));
-    }
-    if (usePlaceholder) {
-      setUsePlaceholder(false);
-      setFormData(prev => ({ ...prev, image: '' }));
-    }
-
     const file = e.target.files?.[0];
     if (file) {
       // Validate file type
@@ -178,41 +172,13 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
       }
 
       setImageFile(file);
-
+      
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
-    }
-  };
-
-  const handleUseWebinarImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setUseWebinarImage(checked);
-
-    if (checked) {
-      setUsePlaceholder(false);
-      setImageFile(null);
-      setImagePreview('/images/Webinar.png');
-      setFormData(prev => ({ ...prev, image: '/images/Webinar.png' }));
-    } else {
-      setImagePreview(formData.image);
-    }
-  };
-
-  const handleUsePlaceholderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setUsePlaceholder(checked);
-
-    if (checked) {
-      setUseWebinarImage(false);
-      setImageFile(null);
-      setImagePreview('/images/uploads/PlaceHolder.png');
-      setFormData(prev => ({ ...prev, image: '/images/uploads/PlaceHolder.png' }));
-    } else {
-      setImagePreview(formData.image);
     }
   };
 
@@ -232,7 +198,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
       }
 
       setGalleryFiles(prev => [...prev, ...files]);
-
+      
       // Create previews
       files.forEach(file => {
         const reader = new FileReader();
@@ -282,7 +248,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
 
       setActivities([...activities, activity]);
       setNewActivity({ content: '', images: [] });
-
+      
       // CRITICAL: Preserve the original featured image - never change it when adding activities
       const originalImage = imagePreview || formData.image;
       if (originalImage) {
@@ -299,6 +265,116 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
     setActivities(activities.filter(activity => activity.id !== activityId));
   };
 
+  const startEditActivity = (activity: { id: string; content: string; images: string[] }) => {
+    setEditingActivityId(activity.id);
+    setEditingContent(activity.content);
+    setEditingImages(activity.images || []);
+    setEditingNewImages([]);
+    setEditingNewImagePreviews([]);
+  };
+
+  const cancelEditActivity = () => {
+    setEditingActivityId(null);
+    setEditingContent('');
+    setEditingImages([]);
+    setEditingNewImages([]);
+    setEditingNewImagePreviews([]);
+  };
+
+  const handleEditActivityImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
+
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) {
+        setError('Please select only image files');
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+    }
+
+    setEditingNewImages(prev => [...prev, ...files]);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setEditingNewImagePreviews(prev => [...prev, event.target?.result as string]);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const removeEditingImage = (index: number) => {
+    setEditingImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const removeEditingNewImage = (index: number) => {
+    setEditingNewImages(prev => prev.filter((_, i) => i !== index));
+    setEditingNewImagePreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const saveEditedActivity = async () => {
+    if (!editingActivityId) return;
+    if (!editingContent.trim()) {
+      setError('Activity content cannot be empty');
+      return;
+    }
+
+    setIsUpdatingActivity(true);
+    try {
+      let newImageUrls: string[] = [];
+      if (editingNewImages.length > 0) {
+        newImageUrls = await uploadGalleryImages(editingNewImages);
+      }
+
+      const updatedImages = [...editingImages, ...newImageUrls];
+      setActivities(prev => prev.map(activity => (
+        activity.id === editingActivityId
+          ? { ...activity, content: editingContent, images: updatedImages }
+          : activity
+      )));
+
+      cancelEditActivity();
+    } catch (error) {
+      console.error('Error updating activity:', error);
+      setError('Error updating activity');
+    } finally {
+      setIsUpdatingActivity(false);
+    }
+  };
+
+  const handleDragStart = (activityId: string) => {
+    setDraggingActivityId(activityId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggingActivityId(null);
+    setDragOverActivityId(null);
+  };
+
+  const handleDropOnActivity = (targetActivityId: string) => {
+    if (!draggingActivityId || draggingActivityId === targetActivityId) return;
+
+    const fromIndex = activities.findIndex(activity => activity.id === draggingActivityId);
+    const toIndex = activities.findIndex(activity => activity.id === targetActivityId);
+    if (fromIndex === -1 || toIndex === -1) return;
+
+    const updated = [...activities];
+    const [moved] = updated.splice(fromIndex, 1);
+    updated.splice(toIndex, 0, moved);
+    setActivities(updated);
+    setDraggingActivityId(null);
+    setDragOverActivityId(null);
+  };
+
+  const handleDragOverActivity = (activityId: string) => {
+    if (draggingActivityId && draggingActivityId !== activityId) {
+      setDragOverActivityId(activityId);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
@@ -313,7 +389,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
 
       // CRITICAL: Always preserve the original featured image unless explicitly changed
       let imageUrl = formData.image || imagePreview;
-
+      
       // Only change the image if a new file is explicitly uploaded
       if (imageFile) {
         const uploadedUrl = await handleImageUpload(imageFile);
@@ -324,7 +400,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
           return;
         }
       }
-
+      
       // Final safeguard: if imageUrl is still empty, use the original project image
       if (!imageUrl && imagePreview) {
         imageUrl = imagePreview;
@@ -466,25 +542,6 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 />
               </div>
 
-              {/* Padlet URL */}
-              <div>
-                <label htmlFor="padletUrl" className="block text-sm font-medium text-gray-700 mb-2">
-                  Padlet URL (Optional)
-                </label>
-                <input
-                  type="url"
-                  id="padletUrl"
-                  name="padletUrl"
-                  value={formData.padletUrl}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
-                  placeholder="https://padlet.com/..."
-                />
-                <p className="mt-1 text-sm text-gray-500">
-                  Enter the full URL of the Padlet board to embed it on the project page.
-                </p>
-              </div>
-
               {/* Category and Status */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -530,7 +587,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Featured Image
                 </label>
-
+                
                 {/* Current Image */}
                 {formData.image && !imageFile && (
                   <div className="mb-4">
@@ -543,34 +600,6 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   </div>
                 )}
 
-                {/* Checkbox Options */}
-                <div className="space-y-3 mb-4">
-                  <div className="flex items-center">
-                    <input
-                      id="useWebinarImage"
-                      type="checkbox"
-                      checked={useWebinarImage}
-                      onChange={handleUseWebinarImageChange}
-                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <label htmlFor="useWebinarImage" className="ml-2 text-sm text-gray-700">
-                      Use default webinar thumbnail
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      id="usePlaceholder"
-                      type="checkbox"
-                      checked={usePlaceholder}
-                      onChange={handleUsePlaceholderChange}
-                      className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <label htmlFor="usePlaceholder" className="ml-2 text-sm text-gray-700">
-                      Use default placeholder image
-                    </label>
-                  </div>
-                </div>
-
                 {/* File Upload */}
                 <div className="mb-4">
                   <input
@@ -578,7 +607,6 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                     id="imageFile"
                     accept="image/*"
                     onChange={handleFileChange}
-                    disabled={useWebinarImage || usePlaceholder}
                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                   />
                   <p className="mt-1 text-sm text-gray-500">
@@ -605,7 +633,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gallery Images
                 </label>
-
+                
                 {/* Existing Gallery Images */}
                 {existingGallery.length > 0 && (
                   <div className="mb-4">
@@ -686,7 +714,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   {activities.length} {activities.length === 1 ? 'activity' : 'activities'} added
                 </div>
               </div>
-
+              
               {/* Add New Activity */}
               <div className="border border-dashed border-gray-300 rounded-lg p-4 mb-6 hover:border-gray-400 transition-colors">
                 <h4 className="text-md font-medium text-gray-700 mb-4 flex items-center">
@@ -695,7 +723,7 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   </svg>
                   Add New Activity
                 </h4>
-
+                
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -766,7 +794,24 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                   </div>
                   <div className="space-y-4">
                     {activities.map((activity, index) => (
-                      <div key={activity.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                      <Fragment key={activity.id}>
+                        {dragOverActivityId === activity.id && draggingActivityId !== activity.id && (
+                          <div className="border-2 border-dashed border-blue-300 bg-blue-50/50 rounded-lg p-4 h-24 mb-4" />
+                        )}
+                        <div
+                          draggable
+                          onDragStart={() => handleDragStart(activity.id)}
+                          onDragEnd={handleDragEnd}
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            handleDragOverActivity(activity.id);
+                          }}
+                          onDrop={() => handleDropOnActivity(activity.id)}
+                          className={`border rounded-lg p-4 bg-gray-50 ${
+                            draggingActivityId === activity.id ? 'border-blue-400 bg-blue-50' : 'border-gray-200'
+                          }`}
+                          title="Drag to reorder"
+                        >
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center">
                             <div className="w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-semibold mr-3">
@@ -774,35 +819,141 @@ export default function EditProject({ params }: { params: Promise<{ id: string }
                             </div>
                             <h5 className="text-sm font-medium text-gray-700">Activity #{index + 1}</h5>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => removeActivity(activity.id)}
-                            className="text-red-600 hover:text-red-800 text-sm font-medium hover:bg-red-50 px-2 py-1 rounded"
-                          >
-                            Remove
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            {editingActivityId !== activity.id && (
+                              <button
+                                type="button"
+                                onClick={() => startEditActivity(activity)}
+                                className="text-blue-600 hover:text-blue-800 text-sm font-medium hover:bg-blue-50 px-2 py-1 rounded"
+                              >
+                                Edit
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => removeActivity(activity.id)}
+                              className="text-red-600 hover:text-red-800 text-sm font-medium hover:bg-red-50 px-2 py-1 rounded"
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
-                        <div className="prose prose-sm max-w-none">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                            {activity.content}
-                          </ReactMarkdown>
-                        </div>
-                        {activity.images.length > 0 && (
-                          <div className="mt-3">
-                            <p className="text-sm text-gray-600 mb-2">Images ({activity.images.length})</p>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                              {activity.images.map((image, imgIndex) => (
-                                <img
-                                  key={imgIndex}
-                                  src={image}
-                                  alt={`Activity ${index + 1} image ${imgIndex + 1}`}
-                                  className="w-full h-20 object-cover rounded-lg"
-                                />
-                              ))}
+                        {editingActivityId === activity.id ? (
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Activity Content
+                              </label>
+                              <RichTextEditor
+                                value={editingContent}
+                                onChange={(content) => setEditingContent(content)}
+                                placeholder="Update the activity content..."
+                                height={200}
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Existing Images
+                              </label>
+                              {editingImages.length === 0 ? (
+                                <p className="text-sm text-gray-500">No images attached.</p>
+                              ) : (
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                  {editingImages.map((image, imgIndex) => (
+                                    <div key={imgIndex} className="relative group">
+                                      <img
+                                        src={image}
+                                        alt={`Activity ${index + 1} image ${imgIndex + 1}`}
+                                        className="w-full h-20 object-cover rounded-lg"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => removeEditingImage(imgIndex)}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors duration-200"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Add New Images
+                              </label>
+                              <input
+                                type="file"
+                                multiple
+                                accept="image/*"
+                                onChange={handleEditActivityImageChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              />
+                              {editingNewImagePreviews.length > 0 && (
+                                <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2">
+                                  {editingNewImagePreviews.map((preview, imgIndex) => (
+                                    <div key={imgIndex} className="relative group">
+                                      <img
+                                        src={preview}
+                                        alt={`New activity image ${imgIndex + 1}`}
+                                        className="w-full h-20 object-cover rounded-lg"
+                                      />
+                                      <button
+                                        type="button"
+                                        onClick={() => removeEditingNewImage(imgIndex)}
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600 transition-colors duration-200"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex items-center justify-end space-x-3">
+                              <button
+                                type="button"
+                                onClick={cancelEditActivity}
+                                className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50"
+                              >
+                                Cancel
+                              </button>
+                              <button
+                                type="button"
+                                onClick={saveEditedActivity}
+                                disabled={isUpdatingActivity}
+                                className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                {isUpdatingActivity ? 'Saving...' : 'Save'}
+                              </button>
                             </div>
                           </div>
+                        ) : (
+                          <>
+                            <div className="prose prose-sm max-w-none">
+                              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                {activity.content}
+                              </ReactMarkdown>
+                            </div>
+                            {activity.images.length > 0 && (
+                              <div className="mt-3">
+                                <p className="text-sm text-gray-600 mb-2">Images ({activity.images.length})</p>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                  {activity.images.map((image, imgIndex) => (
+                                    <img
+                                      key={imgIndex}
+                                      src={image}
+                                      alt={`Activity ${index + 1} image ${imgIndex + 1}`}
+                                      className="w-full h-20 object-cover rounded-lg"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </>
                         )}
-                      </div>
+                        </div>
+                      </Fragment>
                     ))}
                   </div>
                 </div>
