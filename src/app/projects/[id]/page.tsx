@@ -7,7 +7,6 @@ import ImageSlider from '@/components/ImageSlider';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
 
 interface Project {
   id: string;
@@ -20,6 +19,7 @@ interface Project {
   status: string;
   partners?: string[];
   category: string;
+  padletUrl?: string;
 }
 
 async function getProject(id: string): Promise<Project | null> {
@@ -48,9 +48,6 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [project, setProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const searchParams = useSearchParams();
-  const group = searchParams.get('group');
-  const backHref = group === 'k1' ? '/projects?group=k1' : group === 'k2' ? '/projects?group=k2' : '/projects';
 
   const openModal = (imageSrc: string) => {
     setSelectedImage(imageSrc);
@@ -120,7 +117,7 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Link
-          href={backHref}
+          href="/projects"
           className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
         >
           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,6 +239,23 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Project Board */}
+      {project.padletUrl && (
+        <section className="py-12 bg-gray-50 border-t border-gray-200">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">Project Board</h3>
+            <div className="w-full h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+              <iframe
+                src={project.padletUrl}
+                className="w-full h-full border-0"
+                allow="camera;microphone;geolocation;display-capture;clipboard-write"
+                title="Padlet Board"
+              ></iframe>
             </div>
           </div>
         </section>
