@@ -4,18 +4,16 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface DashboardStats {
-  totalProjects: number;
-  totalPosts: number;
-  activeProjects: number;
-  draftPosts: number;
+  localCount: number;
+  ka1Count: number;
+  ka2Count: number;
 }
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
-    totalProjects: 0,
-    totalPosts: 0,
-    activeProjects: 0,
-    draftPosts: 0
+    localCount: 0,
+    ka1Count: 0,
+    ka2Count: 0
   });
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
@@ -40,10 +38,9 @@ export default function AdminDashboard() {
       // In a real app, you would fetch this from your API
       // For now, we'll simulate the data
       setStats({
-        totalProjects: 6,
-        totalPosts: 3,
-        activeProjects: 5,
-        draftPosts: 1
+        localCount: 6,
+        ka1Count: 2,
+        ka2Count: 3
       });
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -103,7 +100,7 @@ export default function AdminDashboard() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-6">Dashboard Overview</h1>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex items-center">
                 <div className="p-3 rounded-full bg-blue-100">
@@ -112,8 +109,8 @@ export default function AdminDashboard() {
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Projects</p>
-                  <p className="text-2xl font-semibold text-gray-900">{stats.totalProjects}</p>
+                  <p className="text-sm font-medium text-gray-600">Local Event Count</p>
+                  <p className="text-2xl font-semibold text-gray-900">{stats.localCount}</p>
                 </div>
               </div>
             </div>
@@ -126,8 +123,8 @@ export default function AdminDashboard() {
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Blog Posts</p>
-                  <p className="text-2xl font-semibold text-gray-900">{stats.totalPosts}</p>
+                  <p className="text-sm font-medium text-gray-600">KA1 Project Count</p>
+                  <p className="text-2xl font-semibold text-gray-900">{stats.ka1Count}</p>
                 </div>
               </div>
             </div>
@@ -140,22 +137,8 @@ export default function AdminDashboard() {
                   </svg>
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Projects</p>
-                  <p className="text-2xl font-semibold text-gray-900">{stats.activeProjects}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow p-6">
-              <div className="flex items-center">
-                <div className="p-3 rounded-full bg-purple-100">
-                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Draft Posts</p>
-                  <p className="text-2xl font-semibold text-gray-900">{stats.draftPosts}</p>
+                  <p className="text-sm font-medium text-gray-600">KA2 Project Count</p>
+                  <p className="text-2xl font-semibold text-gray-900">{stats.ka2Count}</p>
                 </div>
               </div>
             </div>
@@ -163,114 +146,40 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Projects Management */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Project Management</h2>
-              <p className="text-gray-600 mt-1">Manage your projects and create new ones</p>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <Link 
-                  href="/admin/projects"
-                  className="flex items-center justify-between p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
-                >
-                  <div>
-                    <h3 className="font-medium text-gray-800">View All Projects</h3>
-                    <p className="text-sm text-gray-600">Manage existing projects</p>
-                  </div>
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                
-                <Link 
-                  href="/admin/projects/new"
-                  className="flex items-center justify-between p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200"
-                >
-                  <div>
-                    <h3 className="font-medium text-gray-800">Create New Project</h3>
-                    <p className="text-sm text-gray-600">Add a new project to your portfolio</p>
-                  </div>
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </Link>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Link
+            href="/admin/projects"
+            className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-200"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800">View Projects</h2>
+                <p className="text-gray-600 mt-2">Manage existing projects</p>
+              </div>
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </div>
             </div>
-          </div>
+          </Link>
 
-          {/* Blog Management */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-gray-800">Blog Management</h2>
-              <p className="text-gray-600 mt-1">Create and manage blog posts</p>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                <Link 
-                  href="/admin/posts"
-                  className="flex items-center justify-between p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200"
-                >
-                  <div>
-                    <h3 className="font-medium text-gray-800">View All Posts</h3>
-                    <p className="text-sm text-gray-600">Manage existing blog posts</p>
-                  </div>
-                  <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                
-                {/* Create New Post button deactivated
-                <Link 
-                  href="/admin/posts/new"
-                  className="flex items-center justify-between p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors duration-200"
-                >
-                  <div>
-                    <h3 className="font-medium text-gray-800">Create New Post</h3>
-                    <p className="text-sm text-gray-600">Write a new blog post</p>
-                  </div>
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </Link>
-                */}
+          <Link
+            href="/admin/projects/new"
+            className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:border-green-200 hover:shadow-xl transition-all duration-200"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-800">New Project</h2>
+                <p className="text-gray-600 mt-2">Create a new project</p>
+              </div>
+              <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Recent Activity */}
-        <div className="mt-8 bg-white rounded-lg shadow">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">Recent Activity</h2>
-          </div>
-          <div className="p-6">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-4">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <div className="flex-1">
-                  <p className="text-sm text-gray-600">Project "Digital Skills for Education" was updated</p>
-                  <p className="text-xs text-gray-500">2 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <div className="flex-1">
-                  <p className="text-sm text-gray-600">New blog post "Welcome to Kaizen" was published</p>
-                  <p className="text-xs text-gray-500">1 day ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                <div className="flex-1">
-                  <p className="text-sm text-gray-600">Project "Youth Leadership Program" was created</p>
-                  <p className="text-xs text-gray-500">3 days ago</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
