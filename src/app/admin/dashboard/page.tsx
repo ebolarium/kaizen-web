@@ -23,6 +23,12 @@ export default function AdminDashboard() {
     category: string;
     status: string;
   }>>([]);
+  const [recentChanges, setRecentChanges] = useState<Array<{
+    id: string;
+    action: 'created' | 'updated' | 'deleted';
+    title: string;
+    createdAt: string;
+  }>>([]);
 
   useEffect(() => {
     // Check if user is logged in
@@ -86,6 +92,23 @@ export default function AdminDashboard() {
             status: project.status
           }));
         setActiveProjects(active);
+      }
+
+      const changesResponse = await fetch('/api/admin/changes', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (changesResponse.ok) {
+        const changes = await changesResponse.json();
+        setRecentChanges(
+          changes.map((change: any) => ({
+            id: change._id || change.id,
+            action: change.action,
+            title: change.title,
+            createdAt: change.createdAt
+          }))
+        );
       }
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -246,6 +269,32 @@ export default function AdminDashboard() {
               </div>
             </div>
           </Link>
+        </div>
+
+        <div className="mt-8 bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-semibold text-gray-800">Recent Changes</h2>
+            <span className="text-sm text-gray-500">Last 5 updates</span>
+          </div>
+          <div className="space-y-3">
+            {recentChanges.length === 0 ? (
+              <p className="text-sm text-gray-500">No recent changes yet.</p>
+            ) : (
+              recentChanges.map((change) => (
+                <div key={change.id} className="flex items-center justify-between border border-gray-100 rounded-lg px-4 py-3">
+                  <p className="text-sm text-gray-700">
+                    {change.action === 'created' && 'Project created: '}
+                    {change.action === 'updated' && 'Project updated: '}
+                    {change.action === 'deleted' && 'Project deleted: '}
+                    <span className="font-medium text-gray-900">{change.title}</span>
+                  </p>
+                  <span className="text-xs text-gray-500">
+                    {new Date(change.createdAt).toLocaleString()}
+                  </span>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </div>

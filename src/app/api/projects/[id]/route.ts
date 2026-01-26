@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import connectDB from '@/lib/db/mongodb';
 import Project from '@/lib/models/Project';
+import ChangeLog from '@/lib/models/ChangeLog';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -133,6 +134,16 @@ export async function PUT(
 
     await project.save();
 
+    try {
+      await ChangeLog.create({
+        action: 'updated',
+        entity: 'project',
+        title: project.title
+      });
+    } catch (logError) {
+      console.error('Error writing change log:', logError);
+    }
+
     // Return in original format
     return NextResponse.json({
       message: 'Project updated successfully',
@@ -189,6 +200,16 @@ export async function DELETE(
         { message: 'Project not found' },
         { status: 404 }
       );
+    }
+
+    try {
+      await ChangeLog.create({
+        action: 'deleted',
+        entity: 'project',
+        title: project.title
+      });
+    } catch (logError) {
+      console.error('Error writing change log:', logError);
     }
 
     // Return in original format
