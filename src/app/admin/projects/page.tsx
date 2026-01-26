@@ -43,8 +43,8 @@ export default function AdminProjects() {
         // Flatten all projects into a single array
         const allProjects: Project[] = [
           ...data.local.map((project: any) => ({ ...project, category: 'Local' })),
-          ...data.erasmus.k1.k152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
-          ...data.erasmus.k1.k153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
+          ...data.erasmus.k1.ka152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
+          ...data.erasmus.k1.ka153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
           ...data.erasmus.k2.ka210.map((project: any) => ({ ...project, category: 'Erasmus+ KA210' })),
           ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus+ KA220' }))
         ];
