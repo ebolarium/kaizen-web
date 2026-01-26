@@ -2,11 +2,17 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isErasmusOpen, setIsErasmusOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    setIsAdmin(Boolean(token));
+  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -80,6 +86,14 @@ const Navbar = () => {
                 </Link>
               )
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin/dashboard"
+                className="bg-red-600 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-red-700 transition-colors duration-200"
+              >
+                Admin Dashboard
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -145,6 +159,15 @@ const Navbar = () => {
                   </Link>
                 )
               ))}
+              {isAdmin && (
+                <Link
+                  href="/admin/dashboard"
+                  className="bg-red-600 text-white block px-3 py-2 rounded-md text-base font-semibold hover:bg-red-700 transition-colors duration-200"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Admin Dashboard
+                </Link>
+              )}
             </div>
           </div>
         )}
