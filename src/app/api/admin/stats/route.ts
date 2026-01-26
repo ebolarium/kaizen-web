@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     const localCount = await Project.countDocuments({ category: 'local' });
     const ka1Count = await Project.countDocuments({
-      category: { $in: ['k152', 'ka152', 'k153', 'ka153'] }
+      category: { $in: ['ka152', 'ka153'] }
     });
     const ka2Count = await Project.countDocuments({
       category: { $in: ['ka210', 'ka220'] }

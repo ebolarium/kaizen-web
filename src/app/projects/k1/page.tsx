@@ -50,13 +50,13 @@ export default function K1Projects() {
   }
 
   const k1Projects = [
-    ...projects.erasmus.k1.k152,
-    ...projects.erasmus.k1.k153
+    ...projects.erasmus.k1.ka152,
+    ...projects.erasmus.k1.ka153
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const getProjectType = (projectId: string) => {
-    if (projectId.includes('k152')) return 'KA152';
-    if (projectId.includes('k153')) return 'KA153';
+    if (projectId.includes('ka152')) return 'KA152';
+    if (projectId.includes('ka153')) return 'KA153';
     return 'Erasmus+';
   };
 

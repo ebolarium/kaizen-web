@@ -53,8 +53,8 @@ export async function GET() {
         })),
       erasmus: {
         k1: {
-          k152: projects
-            .filter(p => p.category === 'k152')
+          ka152: projects
+            .filter(p => p.category === 'ka152')
             .map(p => ({
               id: p.projectId,
               title: p.title,
@@ -72,8 +72,8 @@ export async function GET() {
               ...(p.partners && { partners: p.partners }),
               ...(p.padletUrl && { padletUrl: p.padletUrl })
             })),
-          k153: projects
-            .filter(p => p.category === 'k153')
+          ka153: projects
+            .filter(p => p.category === 'ka153')
             .map(p => ({
               id: p.projectId,
               title: p.title,

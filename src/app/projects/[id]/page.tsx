@@ -90,10 +90,10 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
     switch (category) {
       case 'local':
         return { name: 'Local Events', color: 'blue', path: '/projects/local' };
-      case 'k152':
-        return { name: 'Erasmus+ KA152', color: 'green', path: '/projects/erasmus/k1/k152' };
-      case 'k153':
-        return { name: 'Erasmus+ KA153', color: 'green', path: '/projects/erasmus/k1/k153' };
+      case 'ka152':
+        return { name: 'Erasmus+ KA152', color: 'green', path: '/projects/erasmus/k1/ka152' };
+      case 'ka153':
+        return { name: 'Erasmus+ KA153', color: 'green', path: '/projects/erasmus/k1/ka153' };
       case 'ka210':
         return { name: 'Erasmus+ KA210', color: 'purple', path: '/projects/erasmus/k2/ka210' };
       case 'k220':

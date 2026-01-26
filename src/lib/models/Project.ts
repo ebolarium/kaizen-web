@@ -10,7 +10,7 @@ export interface IActivity {
 // Project interface
 export interface IProject extends Document {
     projectId: string;
-    category: 'local' | 'k152' | 'k153' | 'ka210' | 'k220';
+    category: 'local' | 'ka152' | 'ka153' | 'ka210' | 'k220';
     title: string;
     description: string;
     content: string;
@@ -57,7 +57,7 @@ const ProjectSchema: Schema = new Schema(
             type: String,
             required: [true, 'Category is required'],
             enum: {
-                values: ['local', 'k152', 'k153', 'ka210', 'k220'],
+                values: ['local', 'ka152', 'ka153', 'ka210', 'k220'],
                 message: '{VALUE} is not a valid category',
             },
         },

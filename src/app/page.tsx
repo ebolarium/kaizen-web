@@ -60,8 +60,8 @@ export default function Home() {
   // Get latest activities from all projects - most recent first
   const allProjects = [
     ...projects.local,
-    ...projects.erasmus.k1.k152,
-    ...projects.erasmus.k1.k153,
+    ...projects.erasmus.k1.ka152,
+    ...projects.erasmus.k1.ka153,
     ...projects.erasmus.k2.ka210,
     ...projects.erasmus.k2.k220
   ];
