@@ -50,13 +50,13 @@ export default function K1Projects() {
   }
 
   const k1Projects = [
-    ...projects.erasmus.k1.ka152,
-    ...projects.erasmus.k1.ka153
+    ...projects.erasmus.k1.k152,
+    ...projects.erasmus.k1.k153
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   const getProjectType = (projectId: string) => {
-    if (projectId.includes('ka152')) return 'KA152';
-    if (projectId.includes('ka153')) return 'KA153';
+    if (projectId.includes('k152')) return 'KA152';
+    if (projectId.includes('k153')) return 'KA153';
     return 'Erasmus+';
   };
 
@@ -69,7 +69,7 @@ export default function K1Projects() {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">KA1 Projects</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Key Action 1 projects we involved in
+              Erasmus+ Key Action 1 projects we are involved in
             </p>
           </div>
         </div>

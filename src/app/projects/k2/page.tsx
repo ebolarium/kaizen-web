@@ -69,7 +69,7 @@ export default function K2Projects() {
             <h1 className="text-3xl md:text-4xl font-bold mb-4">KA2 Projects</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Key Action 2 projects we involved in
+              Erasmus+ Key Action 2 projects we are involved in
             </p>
           </div>
         </div>
