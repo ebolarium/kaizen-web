@@ -16,8 +16,8 @@ const Navbar = () => {
       name: 'Erasmus+',
       href: '/projects',
       children: [
-        { name: 'K1 Projects', href: '/projects/k1' },
-        { name: 'K2 Projects', href: '/projects/k2' },
+        { name: 'KA1 Projects', href: '/projects/k1' },
+        { name: 'KA2 Projects', href: '/projects/k2' },
       ]
     },
     { name: 'Events', href: '/events' },
