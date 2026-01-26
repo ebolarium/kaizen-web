@@ -7,6 +7,8 @@ import ImageSlider from '@/components/ImageSlider';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState, useEffect } from 'react';
+import Lightbox from 'yet-another-react-lightbox';
+import 'yet-another-react-lightbox/styles.css';
 
 interface Project {
   id: string;
@@ -44,19 +46,16 @@ async function getProject(id: string): Promise<Project | null> {
 }
 
 export default function ProjectPage({ params }: { params: Promise<{ id: string }> }) {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [lightboxSlides, setLightboxSlides] = useState<Array<{ src: string }>>([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const [project, setProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const openModal = (imageSrc: string) => {
-    setSelectedImage(imageSrc);
+  const openLightbox = (images: string[], index: number) => {
+    setLightboxSlides(images.map((src) => ({ src })));
+    setLightboxIndex(index);
     setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedImage(null);
-    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -221,7 +220,11 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
                     <div className="mt-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {activity.images.map((image: string, imgIndex: number) => (
-                          <div key={imgIndex} className="relative group cursor-pointer" onClick={() => openModal(image)}>
+                          <div
+                            key={imgIndex}
+                            className="relative group cursor-pointer"
+                            onClick={() => openLightbox(activity.images, imgIndex)}
+                          >
                             <img
                               src={image}
                               alt={`Activity ${index + 1} image ${imgIndex + 1}`}
@@ -262,24 +265,16 @@ export default function ProjectPage({ params }: { params: Promise<{ id: string }
       )}
 
       {/* Image Modal */}
-      {isModalOpen && selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4" onClick={closeModal}>
-          <div className="relative max-w-4xl max-h-full" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={closeModal}
-              className="absolute -top-10 right-0 text-white hover:text-gray-300 transition-colors"
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <img
-              src={selectedImage}
-              alt="Full size image"
-              className="max-w-full max-h-full object-contain rounded-lg"
-            />
-          </div>
-        </div>
+      {isModalOpen && lightboxSlides.length > 0 && (
+        <Lightbox
+          open={isModalOpen}
+          close={() => setIsModalOpen(false)}
+          slides={lightboxSlides}
+          index={lightboxIndex}
+          styles={{
+            container: { backgroundColor: 'rgba(0, 0, 0, 0.9)' }
+          }}
+        />
       )}
 
     </div>
