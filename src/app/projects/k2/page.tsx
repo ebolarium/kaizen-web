@@ -66,10 +66,10 @@ export default function K2Projects() {
       <section className="text-gray-800 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">K2 Projects</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">KA2 Projects</h1>
             <div className="w-20 h-1 bg-gradient-to-r from-blue-400 to-green-400 mb-8 mx-auto"></div>
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-              Erasmus+ KA210 and KA220 projects.
+              Key Action 2 projects we involved in
             </p>
           </div>
         </div>
