@@ -35,13 +35,27 @@ export default function AdminDashboard() {
 
   const loadStats = async () => {
     try {
-      // In a real app, you would fetch this from your API
-      // For now, we'll simulate the data
-      setStats({
-        localCount: 6,
-        ka1Count: 2,
-        ka2Count: 3
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        return;
+      }
+
+      const response = await fetch('/api/admin/stats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
+
+      if (response.ok) {
+        const data = await response.json();
+        setStats({
+          localCount: data.localCount || 0,
+          ka1Count: data.ka1Count || 0,
+          ka2Count: data.ka2Count || 0
+        });
+      } else {
+        console.error('Failed to load stats:', response.status);
+      }
     } catch (error) {
       console.error('Error loading stats:', error);
     } finally {
