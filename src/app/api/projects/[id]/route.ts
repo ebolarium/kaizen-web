@@ -42,9 +42,15 @@ export async function GET(
     }
 
     // Return in original format
+    const normalizedCategory = project.category === 'k152'
+      ? 'ka152'
+      : project.category === 'k153'
+        ? 'ka153'
+        : project.category;
+
     return NextResponse.json({
       id: project.projectId,
-      category: project.category,
+      category: normalizedCategory,
       title: project.title,
       description: project.description,
       content: project.content,

@@ -30,10 +30,16 @@ export async function GET() {
     // Fetch all projects
     const projects = await Project.find({}).sort({ date: -1 });
 
+    const normalizeCategory = (category: string) => {
+      if (category === 'k152') return 'ka152';
+      if (category === 'k153') return 'ka153';
+      return category;
+    };
+
     // Transform to match original JSON structure
     const data = {
       local: projects
-        .filter(p => p.category === 'local')
+        .filter(p => normalizeCategory(p.category) === 'local')
         .map(p => ({
           id: p.projectId,
           title: p.title,
@@ -54,7 +60,7 @@ export async function GET() {
       erasmus: {
         k1: {
           ka152: projects
-            .filter(p => p.category === 'ka152')
+            .filter(p => normalizeCategory(p.category) === 'ka152')
             .map(p => ({
               id: p.projectId,
               title: p.title,
@@ -73,7 +79,7 @@ export async function GET() {
               ...(p.padletUrl && { padletUrl: p.padletUrl })
             })),
           ka153: projects
-            .filter(p => p.category === 'ka153')
+            .filter(p => normalizeCategory(p.category) === 'ka153')
             .map(p => ({
               id: p.projectId,
               title: p.title,
@@ -94,7 +100,7 @@ export async function GET() {
         },
         k2: {
           ka210: projects
-            .filter(p => p.category === 'ka210')
+            .filter(p => normalizeCategory(p.category) === 'ka210')
             .map(p => ({
               id: p.projectId,
               title: p.title,
@@ -113,7 +119,7 @@ export async function GET() {
               ...(p.padletUrl && { padletUrl: p.padletUrl })
             })),
           k220: projects
-            .filter(p => p.category === 'k220')
+            .filter(p => normalizeCategory(p.category) === 'k220')
             .map(p => ({
               id: p.projectId,
               title: p.title,
