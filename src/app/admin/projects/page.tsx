@@ -43,13 +43,16 @@ export default function AdminProjects() {
         // Flatten all projects into a single array
         const allProjects: Project[] = [
           ...data.local.map((project: any) => ({ ...project, category: 'Local' })),
-          ...data.erasmus.k1.ka152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
-          ...data.erasmus.k1.ka153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
+          ...data.erasmus.k1.k152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
+          ...data.erasmus.k1.k153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
           ...data.erasmus.k2.ka210.map((project: any) => ({ ...project, category: 'Erasmus+ KA210' })),
           ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus+ KA220' }))
         ];
 
-        setProjects(allProjects);
+        const sortedProjects = allProjects.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setProjects(sortedProjects);
       } else {
         setError('Failed to load projects');
       }
@@ -76,8 +79,8 @@ export default function AdminProjects() {
 
   const getCategoryColor = (category: string) => {
     if (category.includes('Local')) return 'bg-blue-100 text-blue-800';
-    if (category.includes('K1')) return 'bg-green-100 text-green-800';
-    if (category.includes('K2')) return 'bg-purple-100 text-purple-800';
+    if (category.includes('KA1')) return 'bg-green-100 text-green-800';
+    if (category.includes('KA2')) return 'bg-purple-100 text-purple-800';
     return 'bg-gray-100 text-gray-800';
   };
 

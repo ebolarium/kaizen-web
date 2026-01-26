@@ -17,6 +17,12 @@ export default function AdminDashboard() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
+  const [activeProjects, setActiveProjects] = useState<Array<{
+    id: string;
+    title: string;
+    category: string;
+    status: string;
+  }>>([]);
 
   useEffect(() => {
     // Check if user is logged in
@@ -55,6 +61,31 @@ export default function AdminDashboard() {
         });
       } else {
         console.error('Failed to load stats:', response.status);
+      }
+
+      const projectsResponse = await fetch('/api/projects', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (projectsResponse.ok) {
+        const data = await projectsResponse.json();
+        const allProjects = [
+          ...data.local.map((project: any) => ({ ...project, category: 'Local' })),
+          ...data.erasmus.k1.ka152.map((project: any) => ({ ...project, category: 'Erasmus+ KA152' })),
+          ...data.erasmus.k1.ka153.map((project: any) => ({ ...project, category: 'Erasmus+ KA153' })),
+          ...data.erasmus.k2.ka210.map((project: any) => ({ ...project, category: 'Erasmus+ KA210' })),
+          ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus+ KA220' }))
+        ];
+        const active = allProjects
+          .filter((project: any) => project.status === 'active')
+          .map((project: any) => ({
+            id: project.id,
+            title: project.title,
+            category: project.category,
+            status: project.status
+          }));
+        setActiveProjects(active);
       }
     } catch (error) {
       console.error('Error loading stats:', error);
@@ -161,22 +192,43 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <Link
-            href="/admin/projects"
-            className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-200"
-          >
+          <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-200">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-semibold text-gray-800">View Projects</h2>
-                <p className="text-gray-600 mt-2">Manage existing projects</p>
+                <p className="text-gray-600 mt-2">Active projects</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
+              <Link
+                href="/admin/projects"
+                className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors"
+              >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </div>
+              </Link>
             </div>
-          </Link>
+
+            <div className="mt-6 space-y-3">
+              {activeProjects.length === 0 ? (
+                <p className="text-sm text-gray-500">No active projects found.</p>
+              ) : (
+                activeProjects.map((project) => (
+                  <div key={project.id} className="flex items-center justify-between border border-gray-100 rounded-lg px-4 py-3">
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{project.title}</p>
+                      <p className="text-xs text-gray-500">{project.category}</p>
+                    </div>
+                    <Link
+                      href={`/admin/projects/${project.id}/edit`}
+                      className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
 
           <Link
             href="/admin/projects/new"
