@@ -49,9 +49,19 @@ export default function AdminProjects() {
           ...data.erasmus.k2.k220.map((project: any) => ({ ...project, category: 'Erasmus+ KA220' }))
         ];
 
-        const sortedProjects = allProjects.sort(
-          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
+        const statusOrder = (status: string) => {
+          if (status === 'active') return 0;
+          if (status === 'ongoing') return 1;
+          if (status === 'draft') return 2;
+          if (status === 'completed') return 3;
+          return 4;
+        };
+
+        const sortedProjects = allProjects.sort((a, b) => {
+          const statusDiff = statusOrder(a.status) - statusOrder(b.status);
+          if (statusDiff !== 0) return statusDiff;
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
         setProjects(sortedProjects);
       } else {
         setError('Failed to load projects');
